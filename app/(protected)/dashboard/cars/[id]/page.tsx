@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import ServiceRecordList from "@/components/cars/ServiceRecordList";
+import DeleteCarButton from "@/components/cars/DeleteCarButton";
 
 export default async function CarDetailPage({
   params,
@@ -94,6 +95,7 @@ export default async function CarDetailPage({
             <Button asChild>
               <Link href={`/dashboard/cars/${car.id}/edit`}>Edit Car</Link>
             </Button>
+            <DeleteCarButton carId={car.id} />
           </div>
         </div>
       </div>
