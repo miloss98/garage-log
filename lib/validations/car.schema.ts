@@ -11,3 +11,19 @@ export const carSchema = z.object({
 });
 
 export type CarFormData = z.infer<typeof carSchema>;
+
+export const serviceRecordSchema = z.object({
+  type: z.enum([
+    "oil_change",
+    "small_service",
+    "big_service",
+    "tire_change",
+    "registration",
+  ]),
+  service_date: z.string().min(1, "Service date is required"),
+  next_service_date: z.string().optional(),
+  mileage_at_service: z.string().optional(),
+  notes: z.string().optional(),
+});
+
+export type ServiceRecordFormData = z.infer<typeof serviceRecordSchema>;
