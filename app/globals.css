@@ -49,38 +49,38 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
+  --background: #f8f8f8;
   --card: #ffffff;
+  --foreground: #0a0a0a;
   --card-foreground: #0a0a0a;
   --popover: #ffffff;
   --popover-foreground: #0a0a0a;
-  --primary: #3b6fd4;
-  --primary-foreground: #f8f8f8;
+  --primary: #d97706;
+  --primary-foreground: #ffffff;
   --secondary: #f4f4f5;
   --secondary-foreground: #18181b;
   --muted: #f4f4f5;
   --muted-foreground: #71717a;
-  --accent: #eff6ff;
-  --accent-foreground: #3b6fd4;
+  --accent: #fffbeb;
+  --accent-foreground: #d97706;
   --destructive: #dc2626;
   --border: #e4e4e7;
   --input: #e4e4e7;
-  --ring: #3b6fd4;
-  --chart-1: #60a5fa;
-  --chart-2: #3b82f6;
-  --chart-3: #2563eb;
-  --chart-4: #1d4ed8;
-  --chart-5: #1e40af;
+  --ring: #d97706;
+  --chart-1: #fcd34d;
+  --chart-2: #fbbf24;
+  --chart-3: #f59e0b;
+  --chart-4: #d97706;
+  --chart-5: #b45309;
   --radius: 0.625rem;
   --sidebar: #f8f8f8;
   --sidebar-foreground: #0a0a0a;
-  --sidebar-primary: #3b6fd4;
-  --sidebar-primary-foreground: #f8f8f8;
+  --sidebar-primary: #d97706;
+  --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #f4f4f5;
   --sidebar-accent-foreground: #18181b;
   --sidebar-border: #e4e4e7;
-  --sidebar-ring: #3b6fd4;
+  --sidebar-ring: #d97706;
 }
 
 .dark {
@@ -90,8 +90,8 @@
   --card-foreground: #f8f8f8;
   --popover: #18181b;
   --popover-foreground: #f8f8f8;
-  --primary: #3b82f6;
-  --primary-foreground: #f8f8f8;
+  --primary: #f59e0b;
+  --primary-foreground: #0a0a0a;
   --secondary: #27272a;
   --secondary-foreground: #f8f8f8;
   --muted: #27272a;
@@ -101,22 +101,21 @@
   --destructive: #ef4444;
   --border: rgba(255, 255, 255, 0.1);
   --input: rgba(255, 255, 255, 0.15);
-  --ring: #3b82f6;
-  --chart-1: #60a5fa;
-  --chart-2: #3b82f6;
-  --chart-3: #2563eb;
-  --chart-4: #1d4ed8;
-  --chart-5: #1e40af;
+  --ring: #f59e0b;
+  --chart-1: #fcd34d;
+  --chart-2: #fbbf24;
+  --chart-3: #f59e0b;
+  --chart-4: #d97706;
+  --chart-5: #b45309;
   --sidebar: #18181b;
   --sidebar-foreground: #f8f8f8;
-  --sidebar-primary: #3b82f6;
-  --sidebar-primary-foreground: #f8f8f8;
+  --sidebar-primary: #f59e0b;
+  --sidebar-primary-foreground: #0a0a0a;
   --sidebar-accent: #27272a;
   --sidebar-accent-foreground: #f8f8f8;
   --sidebar-border: rgba(255, 255, 255, 0.1);
-  --sidebar-ring: #3b82f6;
+  --sidebar-ring: #f59e0b;
 }
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -182,5 +181,5 @@ h6 {
 }
 
 .card-hover {
-  @apply transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/5 hover:border-blue-200;
+  @apply transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-500/5 hover:border-amber-200;
 }

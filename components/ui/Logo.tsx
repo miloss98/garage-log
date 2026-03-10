@@ -19,7 +19,7 @@ export default function Logo({
       <div
         className={cn(
           "w-8 h-8 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-105",
-          dark ? "bg-blue-500" : "bg-blue-600",
+          dark ? "bg-amber-500" : "bg-amber-500",
         )}
       >
         <svg
@@ -60,12 +60,12 @@ export default function Logo({
       <span
         className={cn(
           "font-bold text-xl tracking-tight",
-          dark ? "text-slate-100" : "text-slate-900",
+          dark ? "text-[#f0f0f0]" : "text-slate-900",
         )}
         style={{ fontFamily: "var(--font-display)" }}
       >
         Garage
-        <span className={dark ? "text-blue-400" : "text-blue-600"}>Log</span>
+        <span className={dark ? "text-amber-400" : "text-amber-500"}>Log</span>
       </span>
     </Link>
   );

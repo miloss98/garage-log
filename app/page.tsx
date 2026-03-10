@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
-import LandingNavbar from "@/components/layout/LandingNavbar";
+import Navbar from "@/components/layout/Navbar";
 
 export default async function LandingPage() {
   const supabase = await createClient();
@@ -10,21 +10,17 @@ export default async function LandingPage() {
   } = await supabase.auth.getUser();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
-      <LandingNavbar />
+    <div className="min-h-screen bg-[#1a1a1a] text-[#f0f0f0]">
+      <Navbar email={user?.email ?? null} />
 
       {/* Hero */}
       <section className="relative overflow-hidden">
         {/* Background glow */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-blue-600/10 rounded-full blur-3xl" />
-          <div className="absolute top-20 left-1/4 w-[400px] h-[400px] bg-indigo-600/8 rounded-full blur-3xl" />
-        </div>
 
         <div className="relative container mx-auto px-4 py-32 text-center">
           <div className="max-w-4xl mx-auto">
-            <div className="animate-fade-up inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm px-4 py-1.5 rounded-full mb-8">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+            <div className="animate-fade-up inline-flex items-center gap-2 bg-amber-400/10 border border-amber-500/20 text-amber-400 text-sm px-4 py-1.5 rounded-full mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
               Free · No credit card required
             </div>
 
@@ -34,7 +30,7 @@ export default async function LandingPage() {
               service again
             </h1>
 
-            <p className="animate-fade-up animation-delay-200 text-xl text-slate-400 mb-10 leading-relaxed max-w-2xl mx-auto">
+            <p className="animate-fade-up animation-delay-200 text-xl text-[#9a9a9a] mb-10 leading-relaxed max-w-2xl mx-auto">
               Garage Log helps you track oil changes, services, tire changes and
               registration deadlines for all your vehicles — in one place.
             </p>
@@ -53,7 +49,7 @@ export default async function LandingPage() {
                     size="lg"
                     variant="outline"
                     asChild
-                    className="h-12 px-8 text-base border-slate-700 bg-transparent text-slate-300 hover:bg-slate-800 hover:text-slate-100"
+                    className="h-12 px-8 text-base border-[#3d3d3d] bg-transparent text-[#c0c0c0] hover:bg-[#333333] hover:text-[#f0f0f0]"
                   >
                     <Link href="/login">Sign in</Link>
                   </Button>
@@ -67,10 +63,10 @@ export default async function LandingPage() {
       {/* Features */}
       <section className="container mx-auto px-4 py-24">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-slate-100 mb-4">
+          <h2 className="text-3xl font-bold text-[#f0f0f0] mb-4">
             Everything you need to stay on top of maintenance
           </h2>
-          <p className="text-slate-400 max-w-xl mx-auto">
+          <p className="text-[#9a9a9a] max-w-xl mx-auto">
             Simple, focused tools that keep your vehicles running smoothly.
           </p>
         </div>
@@ -97,13 +93,13 @@ export default async function LandingPage() {
           ].map((f) => (
             <div
               key={f.title}
-              className={`animate-fade-up ${f.delay} group p-6 rounded-2xl border border-slate-800 bg-slate-900/50 hover:bg-slate-900 hover:border-slate-700 transition-all duration-300 hover:-translate-y-1`}
+              className={`animate-fade-up ${f.delay} group p-6 rounded-2xl border border-[#333333] bg-[#242424]/50 hover:bg-[#242424] hover:border-[#3d3d3d] transition-all duration-300 hover:-translate-y-1`}
             >
               <div className="text-4xl mb-4">{f.icon}</div>
-              <h3 className="font-semibold text-lg text-slate-100 mb-2">
+              <h3 className="font-semibold text-lg text-[#f0f0f0] mb-2">
                 {f.title}
               </h3>
-              <p className="text-slate-400 text-sm leading-relaxed">{f.desc}</p>
+              <p className="text-[#9a9a9a] text-sm leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
@@ -111,11 +107,11 @@ export default async function LandingPage() {
 
       {/* Status section */}
       <section className="container mx-auto px-4 py-16">
-        <div className="max-w-3xl mx-auto rounded-2xl border border-slate-800 bg-slate-900/50 p-12 text-center">
-          <h2 className="text-3xl font-bold text-slate-100 mb-4">
+        <div className="max-w-3xl mx-auto rounded-2xl border border-[#333333] bg-[#242424]/50 p-12 text-center">
+          <h2 className="text-3xl font-bold text-[#f0f0f0] mb-4">
             Always know what needs attention
           </h2>
-          <p className="text-slate-400 mb-10">
+          <p className="text-[#9a9a9a] mb-10">
             Color-coded status indicators show you at a glance what&apos;s
             overdue, due soon, or all good.
           </p>
@@ -147,10 +143,10 @@ export default async function LandingPage() {
       {/* CTA */}
       <section className="container mx-auto px-4 py-24 text-center">
         <div className="max-w-xl mx-auto">
-          <h2 className="text-3xl font-bold text-slate-100 mb-4">
+          <h2 className="text-3xl font-bold text-[#f0f0f0] mb-4">
             Ready to get started?
           </h2>
-          <p className="text-slate-400 mb-8">
+          <p className="text-[#9a9a9a] mb-8">
             Create a free account and add your first car in minutes.
           </p>
           {user ? (
@@ -166,9 +162,9 @@ export default async function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-800">
+      <footer className="border-t border-[#333333]">
         <div className="container mx-auto px-4 h-16 flex items-center justify-center">
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-[#707070]">
             © {new Date().getFullYear()} GarageLog. Built with Next.js &
             Supabase.
           </p>

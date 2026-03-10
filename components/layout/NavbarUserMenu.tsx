@@ -29,7 +29,9 @@ export default function NavbarUserMenu({ email }: { email: string }) {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-9 w-9 rounded-full">
           <Avatar className="h-9 w-9">
-            <AvatarFallback>{initials}</AvatarFallback>
+            <AvatarFallback className="bg-amber-500 text-white text-sm font-semibold">
+              {initials}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
