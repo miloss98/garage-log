@@ -1,11 +1,23 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import type { ServiceRecord } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import ServiceRecordForm from "./ServiceRecordForm";
+import { toast } from "sonner";
 
 const SERVICE_LABELS: Record<string, string> = {
   oil_change: "🛢️ Oil Change",
@@ -32,6 +44,68 @@ function getStatusBadge(nextServiceDate: string | null) {
   return <Badge className="bg-green-600 hover:bg-green-700">OK</Badge>;
 }
 
+function DeleteRecordButton({ recordId }: { recordId: string }) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  async function handleDelete() {
+    setLoading(true);
+    const supabase = createClient();
+
+    const { error } = await supabase
+      .from("service_records")
+      .delete()
+      .eq("id", recordId);
+
+    if (error) {
+      toast.error("Failed to delete record");
+      setLoading(false);
+      return;
+    }
+
+    toast.success("Record deleted");
+    setOpen(false);
+    router.refresh();
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-destructive hover:text-destructive"
+        >
+          Delete
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete service record?</DialogTitle>
+          <DialogDescription>This action cannot be undone.</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={() => setOpen(false)}
+            disabled={loading}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={handleDelete}
+            disabled={loading}
+          >
+            {loading ? "Deleting..." : "Delete"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export default function ServiceRecordList({
   carId,
   serviceRecords,
@@ -40,12 +114,20 @@ export default function ServiceRecordList({
   serviceRecords: ServiceRecord[];
 }) {
   const [showForm, setShowForm] = useState(false);
+  const [editingRecord, setEditingRecord] = useState<ServiceRecord | null>(
+    null,
+  );
 
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold">Service Records</h2>
-        <Button onClick={() => setShowForm(!showForm)}>
+        <Button
+          onClick={() => {
+            setShowForm(!showForm);
+            setEditingRecord(null);
+          }}
+        >
           {showForm ? "Cancel" : "+ Add Record"}
         </Button>
       </div>
@@ -67,41 +149,70 @@ export default function ServiceRecordList({
       ) : (
         <div className="space-y-3">
           {serviceRecords.map((record) => (
-            <Card key={record.id}>
-              <CardHeader className="pb-2">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-base">
-                    {SERVICE_LABELS[record.type] ?? record.type}
-                  </CardTitle>
-                  {getStatusBadge(record.next_service_date)}
+            <div key={record.id}>
+              <Card>
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-base">
+                      {SERVICE_LABELS[record.type] ?? record.type}
+                    </CardTitle>
+                    <div className="flex items-center gap-2">
+                      {getStatusBadge(record.next_service_date)}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setEditingRecord(
+                            editingRecord?.id === record.id ? null : record,
+                          );
+                          setShowForm(false);
+                        }}
+                      >
+                        {editingRecord?.id === record.id ? "Cancel" : "Edit"}
+                      </Button>
+                      <DeleteRecordButton recordId={record.id} />
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-1">
+                  <p>
+                    Service date:{" "}
+                    <span className="text-foreground font-medium">
+                      {new Date(record.service_date).toLocaleDateString()}
+                    </span>
+                  </p>
+                  {record.next_service_date && (
+                    <p>
+                      Next service:{" "}
+                      <span className="text-foreground font-medium">
+                        {new Date(
+                          record.next_service_date,
+                        ).toLocaleDateString()}
+                      </span>
+                    </p>
+                  )}
+                  {record.mileage_at_service && (
+                    <p>
+                      Mileage at service:{" "}
+                      <span className="text-foreground font-medium">
+                        {record.mileage_at_service.toLocaleString()} km
+                      </span>
+                    </p>
+                  )}
+                  {record.notes && <p>Notes: {record.notes}</p>}
+                </CardContent>
+              </Card>
+
+              {editingRecord?.id === record.id && (
+                <div className="mt-2">
+                  <ServiceRecordForm
+                    carId={carId}
+                    existingRecord={editingRecord}
+                    onSuccess={() => setEditingRecord(null)}
+                  />
                 </div>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground space-y-1">
-                <p>
-                  Service date:{" "}
-                  <span className="text-foreground font-medium">
-                    {new Date(record.service_date).toLocaleDateString()}
-                  </span>
-                </p>
-                {record.next_service_date && (
-                  <p>
-                    Next service:{" "}
-                    <span className="text-foreground font-medium">
-                      {new Date(record.next_service_date).toLocaleDateString()}
-                    </span>
-                  </p>
-                )}
-                {record.mileage_at_service && (
-                  <p>
-                    Mileage at service:{" "}
-                    <span className="text-foreground font-medium">
-                      {record.mileage_at_service.toLocaleString()} km
-                    </span>
-                  </p>
-                )}
-                {record.notes && <p>Notes: {record.notes}</p>}
-              </CardContent>
-            </Card>
+              )}
+            </div>
           ))}
         </div>
       )}

@@ -9,6 +9,7 @@ import {
   serviceRecordSchema,
   type ServiceRecordFormData,
 } from "@/lib/validations/car.schema";
+import type { ServiceRecord } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -32,21 +33,27 @@ import { toast } from "sonner";
 
 export default function ServiceRecordForm({
   carId,
+  existingRecord,
   onSuccess,
 }: {
   carId: string;
+  existingRecord?: ServiceRecord;
   onSuccess: () => void;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const isEditing = !!existingRecord;
 
   const form = useForm<ServiceRecordFormData>({
     resolver: zodResolver(serviceRecordSchema),
     defaultValues: {
-      service_date: "",
-      next_service_date: "",
-      notes: "",
-      mileage_at_service: "",
+      type: existingRecord?.type ?? undefined,
+      service_date: existingRecord?.service_date ?? "",
+      next_service_date: existingRecord?.next_service_date ?? "",
+      mileage_at_service: existingRecord?.mileage_at_service
+        ? String(existingRecord.mileage_at_service)
+        : "",
+      notes: existingRecord?.notes ?? "",
     },
   });
 
@@ -54,7 +61,7 @@ export default function ServiceRecordForm({
     setLoading(true);
     const supabase = createClient();
 
-    const { error } = await supabase.from("service_records").insert({
+    const payload = {
       car_id: carId,
       type: data.type,
       service_date: data.service_date,
@@ -63,15 +70,24 @@ export default function ServiceRecordForm({
         ? parseInt(data.mileage_at_service)
         : null,
       notes: data.notes || null,
-    });
+    };
+
+    const { error } = isEditing
+      ? await supabase
+          .from("service_records")
+          .update(payload)
+          .eq("id", existingRecord.id)
+      : await supabase.from("service_records").insert(payload);
 
     if (error) {
-      toast.error("Failed to add service record");
+      toast.error(
+        isEditing ? "Failed to update record" : "Failed to add record",
+      );
       setLoading(false);
       return;
     }
 
-    toast.success("Service record added!");
+    toast.success(isEditing ? "Record updated!" : "Record added!");
     router.refresh();
     onSuccess();
   }
@@ -176,7 +192,13 @@ export default function ServiceRecordForm({
               )}
             />
             <Button type="submit" disabled={loading}>
-              {loading ? "Saving..." : "Save Record"}
+              {loading
+                ? isEditing
+                  ? "Saving..."
+                  : "Adding..."
+                : isEditing
+                  ? "Save Changes"
+                  : "Save Record"}
             </Button>
           </form>
         </Form>
