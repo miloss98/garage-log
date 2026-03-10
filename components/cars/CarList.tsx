@@ -1,12 +1,46 @@
 "use client";
 
-import type { Car } from "@/types";
+import { useCars } from "@/hooks/useCars";
 import CarCard from "./CarCard";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function CarList({ cars }: { cars: Car[] }) {
-  if (cars.length === 0) {
+function CarCardSkeleton() {
+  return (
+    <div className="rounded-lg border bg-card p-4 space-y-3">
+      <Skeleton className="h-40 w-full rounded-md" />
+      <Skeleton className="h-5 w-2/3" />
+      <Skeleton className="h-4 w-1/2" />
+      <Skeleton className="h-9 w-full" />
+    </div>
+  );
+}
+
+export default function CarList() {
+  const { data: cars, isLoading, isError } = useCars();
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[1, 2, 3].map((i) => (
+          <CarCardSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-destructive">
+          Failed to load cars. Please try again.
+        </p>
+      </div>
+    );
+  }
+
+  if (!cars || cars.length === 0) {
     return (
       <div className="text-center py-20">
         <p className="text-6xl mb-4">🚗</p>

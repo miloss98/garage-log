@@ -1,20 +1,8 @@
-import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import CarList from "@/components/cars/CarList";
 
-export default async function CarsPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const { data: cars } = await supabase
-    .from("cars")
-    .select("*")
-    .eq("user_id", user!.id)
-    .order("created_at", { ascending: false });
-
+export default function CarsPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
@@ -28,8 +16,7 @@ export default async function CarsPage() {
           <Link href="/dashboard/cars/new">+ Add Car</Link>
         </Button>
       </div>
-
-      <CarList cars={cars ?? []} />
+      <CarList />
     </div>
   );
 }
