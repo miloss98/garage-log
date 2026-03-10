@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Car, AlertCircle, Clock, CheckCircle2 } from "lucide-react";
 
 function getServiceStatus(nextDate: string | null) {
   if (!nextDate) return null;
@@ -34,7 +35,7 @@ function StatCard({
 }: {
   label: string;
   value: number;
-  icon: string;
+  icon: React.ReactNode;
 }) {
   return (
     <Card>
@@ -44,7 +45,7 @@ function StatCard({
             <p className="text-sm text-muted-foreground">{label}</p>
             <p className="text-3xl font-bold mt-1">{value}</p>
           </div>
-          <span className="text-4xl">{icon}</span>
+          <div className="text-muted-foreground">{icon}</div>
         </div>
       </CardContent>
     </Card>
@@ -142,9 +143,21 @@ export default function DashboardSummary({ userName }: { userName: string }) {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <StatCard label="Total Vehicles" value={totalCars} icon="🚗" />
-        <StatCard label="Overdue Services" value={overdueCount} icon="🔴" />
-        <StatCard label="Due Soon" value={dueSoonCount} icon="🟠" />
+        <StatCard
+          label="Total Vehicles"
+          value={totalCars}
+          icon={<Car size={32} />}
+        />
+        <StatCard
+          label="Overdue Services"
+          value={overdueCount}
+          icon={<AlertCircle size={32} className="text-destructive" />}
+        />
+        <StatCard
+          label="Due Soon"
+          value={dueSoonCount}
+          icon={<Clock size={32} className="text-amber-500" />}
+        />
       </div>
 
       {/* Alerts */}
@@ -170,7 +183,7 @@ export default function DashboardSummary({ userName }: { userName: string }) {
       ) : totalCars > 0 ? (
         <Card>
           <CardContent className="py-10 text-center">
-            <p className="text-4xl mb-3">✅</p>
+            <CheckCircle2 size={40} className="text-green-500 mx-auto mb-3" />
             <p className="font-medium">All services are up to date!</p>
             <p className="text-sm text-muted-foreground mt-1">
               No overdue or upcoming services in the next 30 days
@@ -180,7 +193,7 @@ export default function DashboardSummary({ userName }: { userName: string }) {
       ) : (
         <Card>
           <CardContent className="py-10 text-center">
-            <p className="text-4xl mb-3">🚗</p>
+            <Car size={40} className="text-muted-foreground mx-auto mb-3" />
             <p className="font-medium mb-4">No cars added yet</p>
             <Button asChild>
               <Link href="/dashboard/cars/new">Add your first car</Link>

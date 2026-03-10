@@ -5,6 +5,7 @@ import CarCard from "./CarCard";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Car } from "lucide-react";
 
 function CarCardSkeleton() {
   return (
@@ -43,7 +44,7 @@ export default function CarList() {
   if (!cars || cars.length === 0) {
     return (
       <div className="text-center py-20">
-        <p className="text-6xl mb-4">🚗</p>
+        <Car size={48} className="text-muted-foreground mx-auto mb-4" />
         <h2 className="text-xl font-semibold mb-2">No cars yet</h2>
         <p className="text-muted-foreground mb-6">
           Add your first car to start tracking maintenance

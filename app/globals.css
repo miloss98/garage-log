@@ -116,6 +116,7 @@
   --sidebar-border: rgba(255, 255, 255, 0.1);
   --sidebar-ring: #f59e0b;
 }
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -126,8 +127,11 @@
   html {
     @apply font-sans;
   }
+  button,
+  a {
+    @apply cursor-pointer;
+  }
 }
-
 /* Typography */
 h1,
 h2,
@@ -181,5 +185,5 @@ h6 {
 }
 
 .card-hover {
-  @apply transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-500/5 hover:border-amber-200;
+  @apply transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/5 hover:border-amber-200;
 }

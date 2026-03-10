@@ -14,12 +14,12 @@ import { Badge } from "@/components/ui/badge";
 
 export default function CarCard({ car }: { car: Car }) {
   return (
-    <Card className="card-hover overflow-hidden group">
+    <Card className="card-hover overflow-hidden">
       {car.image_url ? (
         <img
           src={car.image_url}
           alt={car.name}
-          className="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-44 object-cover"
         />
       ) : (
         <div className="w-full h-44 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">

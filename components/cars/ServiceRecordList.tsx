@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import ServiceRecordForm from "./ServiceRecordForm";
 import { toast } from "sonner";
+import { Wrench } from "lucide-react";
 
 const SERVICE_LABELS: Record<string, string> = {
   oil_change: "🛢️ Oil Change",
@@ -143,7 +144,7 @@ export default function ServiceRecordList({
 
       {serviceRecords.length === 0 && !showForm ? (
         <div className="text-center py-12 text-muted-foreground">
-          <p className="text-4xl mb-3">🔧</p>
+          <Wrench size={40} className="text-muted-foreground mx-auto mb-3" />
           <p>No service records yet. Add your first one!</p>
         </div>
       ) : (

@@ -35,17 +35,23 @@ export default function NavbarUserMenu({ email }: { email: string }) {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent
+        align="end"
+        className="w-52 bg-[#1a1a1a] border-[#333333]"
+      >
         <div className="px-2 py-1.5">
-          <p className="text-sm font-medium">{email}</p>
+          <p className="text-sm font-medium text-[#f0f0f0] truncate">{email}</p>
         </div>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
+        <DropdownMenuSeparator className="bg-[#333333]" />
+        <DropdownMenuItem
+          asChild
+          className="text-[#c0c0c0] hover:text-[#f0f0f0] cursor-pointer focus:bg-[#2e2e2e]"
+        >
           <Link href="/dashboard/profile">Profile</Link>
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="bg-[#333333]" />
         <DropdownMenuItem
-          className="text-destructive cursor-pointer"
+          className="text-destructive cursor-pointer focus:bg-[#2e2e2e] focus:text-destructive"
           onClick={handleLogout}
         >
           Log out
