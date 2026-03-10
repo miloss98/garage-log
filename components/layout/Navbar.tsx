@@ -10,7 +10,7 @@ export default function Navbar({ user }: { user: User }) {
   const { isMobileMenuOpen, toggleMobileMenu, closeMobileMenu } = useUIStore();
 
   return (
-    <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <Link href="/dashboard" className="font-bold text-xl">
@@ -65,13 +65,6 @@ export default function Navbar({ user }: { user: User }) {
             onClick={closeMobileMenu}
           >
             My Cars
-          </Link>
-          <Link
-            href="/dashboard/profile"
-            className="text-sm font-medium px-2 py-2 rounded-md hover:bg-muted transition-colors"
-            onClick={closeMobileMenu}
-          >
-            Profile
           </Link>
         </div>
       )}

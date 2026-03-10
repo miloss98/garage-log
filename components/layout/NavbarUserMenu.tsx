@@ -38,6 +38,10 @@ export default function NavbarUserMenu({ email }: { email: string }) {
           <p className="text-sm font-medium">{email}</p>
         </div>
         <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard/profile">Profile</Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem
           className="text-destructive cursor-pointer"
           onClick={handleLogout}
