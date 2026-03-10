@@ -10,94 +10,134 @@ export default async function LandingPage() {
   } = await supabase.auth.getUser();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-slate-950 text-slate-100">
       <LandingNavbar />
 
       {/* Hero */}
-      <section className="container mx-auto px-4 py-24 text-center">
-        <div className="max-w-3xl mx-auto">
-          <div className="inline-block bg-muted text-muted-foreground text-sm px-4 py-1.5 rounded-full mb-6">
-            Free · No credit card required
-          </div>
-          <h1 className="text-5xl font-bold tracking-tight mb-6">
-            Never miss a car service again
-          </h1>
-          <p className="text-xl text-muted-foreground mb-10 leading-relaxed">
-            Garage Log helps you track oil changes, services, tire changes and
-            registration deadlines for all your vehicles — in one place.
-          </p>
-          <div className="flex items-center justify-center gap-4">
-            {user ? (
-              <Button size="lg" asChild>
-                <Link href="/dashboard">Go to your Dashboard</Link>
-              </Button>
-            ) : (
-              <>
-                <Button size="lg" asChild>
-                  <Link href="/register">Start tracking for free</Link>
+      <section className="relative overflow-hidden">
+        {/* Background glow */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-blue-600/10 rounded-full blur-3xl" />
+          <div className="absolute top-20 left-1/4 w-[400px] h-[400px] bg-indigo-600/8 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative container mx-auto px-4 py-32 text-center">
+          <div className="max-w-4xl mx-auto">
+            <div className="animate-fade-up inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm px-4 py-1.5 rounded-full mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+              Free · No credit card required
+            </div>
+
+            <h1 className="animate-fade-up animation-delay-100 text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-gradient-to-b from-slate-100 to-slate-400 bg-clip-text text-transparent leading-tight">
+              Never miss a car
+              <br />
+              service again
+            </h1>
+
+            <p className="animate-fade-up animation-delay-200 text-xl text-slate-400 mb-10 leading-relaxed max-w-2xl mx-auto">
+              Garage Log helps you track oil changes, services, tire changes and
+              registration deadlines for all your vehicles — in one place.
+            </p>
+
+            <div className="animate-fade-up animation-delay-300 flex items-center justify-center gap-4 flex-wrap">
+              {user ? (
+                <Button size="lg" asChild className="h-12 px-8 text-base">
+                  <Link href="/dashboard">Go to Dashboard →</Link>
                 </Button>
-                <Button size="lg" variant="outline" asChild>
-                  <Link href="/login">Sign in</Link>
-                </Button>
-              </>
-            )}
+              ) : (
+                <>
+                  <Button size="lg" asChild className="h-12 px-8 text-base">
+                    <Link href="/register">Start for free →</Link>
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    asChild
+                    className="h-12 px-8 text-base border-slate-700 bg-transparent text-slate-300 hover:bg-slate-800 hover:text-slate-100"
+                  >
+                    <Link href="/login">Sign in</Link>
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+      <section className="container mx-auto px-4 py-24">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-bold text-slate-100 mb-4">
+            Everything you need to stay on top of maintenance
+          </h2>
+          <p className="text-slate-400 max-w-xl mx-auto">
+            Simple, focused tools that keep your vehicles running smoothly.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {[
             {
               icon: "🛢️",
               title: "Service History",
               desc: "Log every oil change, small and big service with dates and mileage.",
+              delay: "animation-delay-100",
             },
             {
               icon: "📋",
               title: "Registration Tracking",
               desc: "Never miss a registration deadline with clear due date indicators.",
+              delay: "animation-delay-200",
             },
             {
               icon: "🚗",
               title: "Multiple Vehicles",
               desc: "Manage all your cars in one place. Each with its own full history.",
+              delay: "animation-delay-300",
             },
           ].map((f) => (
             <div
               key={f.title}
-              className="text-center p-6 rounded-xl border bg-card"
+              className={`animate-fade-up ${f.delay} group p-6 rounded-2xl border border-slate-800 bg-slate-900/50 hover:bg-slate-900 hover:border-slate-700 transition-all duration-300 hover:-translate-y-1`}
             >
               <div className="text-4xl mb-4">{f.icon}</div>
-              <h3 className="font-semibold text-lg mb-2">{f.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                {f.desc}
-              </p>
+              <h3 className="font-semibold text-lg text-slate-100 mb-2">
+                {f.title}
+              </h3>
+              <p className="text-slate-400 text-sm leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Status indicators section */}
+      {/* Status section */}
       <section className="container mx-auto px-4 py-16">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">
+        <div className="max-w-3xl mx-auto rounded-2xl border border-slate-800 bg-slate-900/50 p-12 text-center">
+          <h2 className="text-3xl font-bold text-slate-100 mb-4">
             Always know what needs attention
           </h2>
-          <p className="text-muted-foreground mb-10">
+          <p className="text-slate-400 mb-10">
             Color-coded status indicators show you at a glance what&apos;s
             overdue, due soon, or all good.
           </p>
-          <div className="flex items-center justify-center gap-6 flex-wrap">
+          <div className="flex items-center justify-center gap-8 flex-wrap">
             {[
-              { label: "Overdue", color: "bg-red-500" },
-              { label: "Due Soon", color: "bg-orange-500" },
-              { label: "All Good", color: "bg-green-500" },
+              { label: "Overdue", color: "bg-red-500", text: "text-red-400" },
+              {
+                label: "Due Soon",
+                color: "bg-orange-500",
+                text: "text-orange-400",
+              },
+              {
+                label: "All Good",
+                color: "bg-green-500",
+                text: "text-green-400",
+              },
             ].map((s) => (
-              <div key={s.label} className="flex items-center gap-2">
-                <div className={`w-3 h-3 rounded-full ${s.color}`} />
-                <span className="text-sm font-medium">{s.label}</span>
+              <div key={s.label} className="flex items-center gap-2.5">
+                <div className={`w-2.5 h-2.5 rounded-full ${s.color}`} />
+                <span className={`text-sm font-medium ${s.text}`}>
+                  {s.label}
+                </span>
               </div>
             ))}
           </div>
@@ -107,26 +147,28 @@ export default async function LandingPage() {
       {/* CTA */}
       <section className="container mx-auto px-4 py-24 text-center">
         <div className="max-w-xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4">Ready to get started?</h2>
-          <p className="text-muted-foreground mb-8">
+          <h2 className="text-3xl font-bold text-slate-100 mb-4">
+            Ready to get started?
+          </h2>
+          <p className="text-slate-400 mb-8">
             Create a free account and add your first car in minutes.
           </p>
           {user ? (
-            <Button size="lg" asChild>
-              <Link href="/dashboard">Go to your Dashboard</Link>
+            <Button size="lg" asChild className="h-12 px-8">
+              <Link href="/dashboard">Go to Dashboard →</Link>
             </Button>
           ) : (
-            <Button size="lg" asChild>
-              <Link href="/register">Create free account</Link>
+            <Button size="lg" asChild className="h-12 px-8">
+              <Link href="/register">Create free account →</Link>
             </Button>
           )}
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t">
+      <footer className="border-t border-slate-800">
         <div className="container mx-auto px-4 h-16 flex items-center justify-center">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             © {new Date().getFullYear()} Garage Log. Built with Next.js &
             Supabase.
           </p>

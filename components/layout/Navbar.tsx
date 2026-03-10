@@ -10,24 +10,27 @@ export default function Navbar({ user }: { user: User }) {
   const { isMobileMenuOpen, toggleMobileMenu, closeMobileMenu } = useUIStore();
 
   return (
-    <nav className="border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+    <nav className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <Link href="/dashboard" className="font-bold text-xl">
-            🚗 Garage Log
+          <Link
+            href="/dashboard"
+            className="font-bold text-xl flex items-center gap-2"
+          >
+            <span className="text-2xl">🚗</span>
+            <span>Garage Log</span>
           </Link>
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-1">
             <Link
               href="/dashboard"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent px-3 py-1.5 rounded-md transition-all duration-150"
               onClick={closeMobileMenu}
             >
               Dashboard
             </Link>
             <Link
               href="/dashboard/cars"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent px-3 py-1.5 rounded-md transition-all duration-150"
               onClick={closeMobileMenu}
             >
               My Cars
@@ -36,7 +39,6 @@ export default function Navbar({ user }: { user: User }) {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Mobile menu toggle */}
           <Button
             variant="ghost"
             size="sm"
@@ -49,19 +51,18 @@ export default function Navbar({ user }: { user: User }) {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t bg-background px-4 py-4 flex flex-col gap-1">
+        <div className="md:hidden border-t bg-white px-4 py-4 flex flex-col gap-1 animate-fade-in">
           <Link
             href="/dashboard"
-            className="text-sm font-medium px-2 py-2 rounded-md hover:bg-muted transition-colors"
+            className="text-sm font-medium px-3 py-2 rounded-md hover:bg-accent transition-colors"
             onClick={closeMobileMenu}
           >
             Dashboard
           </Link>
           <Link
             href="/dashboard/cars"
-            className="text-sm font-medium px-2 py-2 rounded-md hover:bg-muted transition-colors"
+            className="text-sm font-medium px-3 py-2 rounded-md hover:bg-accent transition-colors"
             onClick={closeMobileMenu}
           >
             My Cars

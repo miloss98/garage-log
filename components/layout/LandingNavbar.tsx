@@ -10,25 +10,40 @@ export default async function LandingNavbar() {
   } = await supabase.auth.getUser();
 
   return (
-    <nav className="border-b">
+    <nav className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="font-bold text-xl">
-          🚗 Garage Log
+        <Link
+          href="/"
+          className="font-bold text-xl text-slate-100 flex items-center gap-2"
+        >
+          <span className="text-2xl">🚗</span>
+          <span>Garage Log</span>
         </Link>
         <div className="flex items-center gap-3">
           {user ? (
             <>
-              <Button variant="ghost" asChild>
+              <Button
+                variant="ghost"
+                asChild
+                className="text-slate-400 hover:text-slate-100 hover:bg-slate-800"
+              >
                 <Link href="/dashboard">Dashboard</Link>
               </Button>
               <NavbarUserMenu email={user.email ?? ""} />
             </>
           ) : (
             <>
-              <Button variant="ghost" asChild>
+              <Button
+                variant="ghost"
+                asChild
+                className="text-slate-400 hover:text-slate-100 hover:bg-slate-800"
+              >
                 <Link href="/login">Sign in</Link>
               </Button>
-              <Button asChild>
+              <Button
+                asChild
+                className="bg-blue-600 hover:bg-blue-500 text-white"
+              >
                 <Link href="/register">Get Started</Link>
               </Button>
             </>
