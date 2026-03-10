@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Pencil } from "lucide-react";
 import ServiceRecordList from "@/components/cars/ServiceRecordList";
 import DeleteCarButton from "@/components/cars/DeleteCarButton";
 
@@ -30,11 +31,21 @@ export default async function CarDetailPage({
 
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Back button */}
-      <div className="mb-6">
-        <Button variant="outline" asChild>
-          <Link href="/dashboard/cars">← Back to My Cars</Link>
+      {/* Top bar */}
+      <div className="flex items-center justify-between mb-6">
+        <Button variant="outline" size="icon" asChild>
+          <Link href="/dashboard/cars">
+            <ArrowLeft size={16} />
+          </Link>
         </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="icon" asChild>
+            <Link href={`/dashboard/cars/${car.id}/edit`}>
+              <Pencil size={16} />
+            </Link>
+          </Button>
+          <DeleteCarButton carId={car.id} />
+        </div>
       </div>
 
       {/* Car header */}
@@ -91,16 +102,9 @@ export default async function CarDetailPage({
               </div>
             )}
           </div>
-          <div className="flex gap-2 mt-4">
-            <Button asChild>
-              <Link href={`/dashboard/cars/${car.id}/edit`}>Edit Car</Link>
-            </Button>
-            <DeleteCarButton carId={car.id} />
-          </div>
         </div>
       </div>
 
-      {/* Service Records */}
       <ServiceRecordList carId={car.id} serviceRecords={serviceRecords ?? []} />
     </div>
   );

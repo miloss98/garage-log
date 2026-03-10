@@ -18,16 +18,32 @@ import {
 } from "@/components/ui/dialog";
 import ServiceRecordForm from "./ServiceRecordForm";
 import { toast } from "sonner";
-import { Wrench } from "lucide-react";
+import {
+  Pencil,
+  Trash2,
+  X,
+  Droplets,
+  Wrench,
+  Settings,
+  CircleDot,
+  ClipboardList,
+} from "lucide-react";
 
 const SERVICE_LABELS: Record<string, string> = {
-  oil_change: "🛢️ Oil Change",
-  small_service: "🔧 Small Service",
-  big_service: "⚙️ Big Service",
-  tire_change: "🔄 Tire Change",
-  registration: "📋 Registration",
+  oil_change: "Oil Change",
+  small_service: "Small Service",
+  big_service: "Big Service",
+  tire_change: "Tire Change",
+  registration: "Registration",
 };
 
+const SERVICE_ICONS: Record<string, React.ReactNode> = {
+  oil_change: <Droplets size={16} className="text-amber-500" />,
+  small_service: <Wrench size={16} className="text-blue-500" />,
+  big_service: <Settings size={16} className="text-purple-500" />,
+  tire_change: <CircleDot size={16} className="text-gray-500" />,
+  registration: <ClipboardList size={16} className="text-green-500" />,
+};
 function getStatusBadge(nextServiceDate: string | null) {
   if (!nextServiceDate) return null;
 
@@ -37,12 +53,23 @@ function getStatusBadge(nextServiceDate: string | null) {
     (next.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
   );
 
-  if (daysUntil < 0) return <Badge variant="destructive">Overdue</Badge>;
+  if (daysUntil < 0)
+    return (
+      <Badge variant="destructive" className="pointer-events-none text-white">
+        Overdue
+      </Badge>
+    );
   if (daysUntil <= 30)
     return (
-      <Badge className="bg-orange-500 hover:bg-orange-600">Due soon</Badge>
+      <Badge className="bg-orange-500 text-white hover:bg-orange-600 pointer-events-none">
+        Due soon
+      </Badge>
     );
-  return <Badge className="bg-green-600 hover:bg-green-700">OK</Badge>;
+  return (
+    <Badge className="bg-green-600 text-white hover:bg-green-700 pointer-events-none">
+      OK
+    </Badge>
+  );
 }
 
 function DeleteRecordButton({ recordId }: { recordId: string }) {
@@ -74,11 +101,11 @@ function DeleteRecordButton({ recordId }: { recordId: string }) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          variant="ghost"
-          size="sm"
-          className="text-destructive hover:text-destructive"
+          variant="outline"
+          size="icon"
+          className="text-destructive  hover:text-destructive hover:bg-destructive/10 cursor-pointer"
         >
-          Delete
+          <Trash2 size={15} />
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -154,14 +181,16 @@ export default function ServiceRecordList({
               <Card>
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-base">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      {SERVICE_ICONS[record.type]}
                       {SERVICE_LABELS[record.type] ?? record.type}
                     </CardTitle>
                     <div className="flex items-center gap-2">
                       {getStatusBadge(record.next_service_date)}
                       <Button
-                        variant="ghost"
-                        size="sm"
+                        variant="outline"
+                        size="icon"
+                        className="cursor-pointer "
                         onClick={() => {
                           setEditingRecord(
                             editingRecord?.id === record.id ? null : record,
@@ -169,7 +198,11 @@ export default function ServiceRecordList({
                           setShowForm(false);
                         }}
                       >
-                        {editingRecord?.id === record.id ? "Cancel" : "Edit"}
+                        {editingRecord?.id === record.id ? (
+                          <X size={15} />
+                        ) : (
+                          <Pencil size={15} />
+                        )}
                       </Button>
                       <DeleteRecordButton recordId={record.id} />
                     </div>

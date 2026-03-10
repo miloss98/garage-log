@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ArrowRight } from "lucide-react";
 
 export default function CarCard({ car }: { car: Car }) {
   return (
@@ -68,7 +69,12 @@ export default function CarCard({ car }: { car: Car }) {
       </CardContent>
       <CardFooter>
         <Button asChild className="w-full transition-all duration-200">
-          <Link href={`/dashboard/cars/${car.id}`}>View Details →</Link>
+          <Link
+            href={`/dashboard/cars/${car.id}`}
+            className="flex items-center justify-center gap-2"
+          >
+            View Details <ArrowRight size={16} />
+          </Link>
         </Button>
       </CardFooter>
     </Card>

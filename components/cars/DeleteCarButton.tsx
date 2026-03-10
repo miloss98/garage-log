@@ -14,6 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { Trash2 } from "lucide-react";
 
 export default function DeleteCarButton({ carId }: { carId: string }) {
   const router = useRouter();
@@ -41,8 +42,12 @@ export default function DeleteCarButton({ carId }: { carId: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="cursor-pointer" variant="destructive">
-          Delete Car
+        <Button
+          variant="outline"
+          size="icon"
+          className="text-destructive hover:text-destructive hover:bg-destructive/10 hover:border-destructive/30"
+        >
+          <Trash2 size={16} />
         </Button>
       </DialogTrigger>
       <DialogContent>

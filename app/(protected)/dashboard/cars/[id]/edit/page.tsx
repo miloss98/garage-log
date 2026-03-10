@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import CarEditForm from "@/components/cars/CarEditForm";
+import { ArrowLeft } from "lucide-react";
 
 export default async function EditCarPage({
   params,
@@ -24,7 +25,10 @@ export default async function EditCarPage({
     <div className="max-w-2xl mx-auto">
       <div className="mb-8">
         <Button variant="outline" asChild className="mb-4">
-          <Link href={`/dashboard/cars/${id}`}>← Back to Car</Link>
+          <Link href={`/dashboard/cars/${id}`}>
+            {" "}
+            <ArrowLeft size={16} />{" "}
+          </Link>
         </Button>
         <h1 className="text-3xl font-bold">Edit Car</h1>
         <p className="text-muted-foreground mt-1">

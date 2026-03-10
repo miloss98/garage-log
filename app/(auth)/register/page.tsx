@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/form";
 import Logo from "@/components/ui/Logo";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -148,10 +149,17 @@ export default function RegisterPage() {
                 )}
                 <Button
                   type="submit"
-                  className="w-full bg-amber-500 hover:bg-amber-400 text-white h-10"
+                  className="w-full bg-amber-600 hover:bg-amber-500 text-white h-10 flex items-center gap-2"
                   disabled={loading}
                 >
-                  {loading ? "Creating account..." : "Create account →"}
+                  {loading ? (
+                    "Creating account..."
+                  ) : (
+                    <>
+                      <span>Create account</span>
+                      <ArrowRight size={16} />
+                    </>
+                  )}
                 </Button>
               </form>
             </Form>

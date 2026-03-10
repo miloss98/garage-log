@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
+import ImageUpload from "../ui/ImageUpload";
 
 export default function CarEditForm({ car }: { car: Car }) {
   const router = useRouter();
@@ -47,13 +48,6 @@ export default function CarEditForm({ car }: { car: Car }) {
       fuel_type: (car.fuel_type as CarFormData["fuel_type"]) ?? undefined,
     },
   });
-
-  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
-  }
 
   async function onSubmit(data: CarFormData) {
     setLoading(true);
@@ -108,22 +102,17 @@ export default function CarEditForm({ car }: { car: Car }) {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Image upload */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Car Photo</label>
-              {imagePreview && (
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="w-full h-48 object-cover rounded-md"
-                />
-              )}
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-            </div>
-
+            <ImageUpload
+              preview={imagePreview}
+              onChange={(file) => {
+                setImageFile(file);
+                setImagePreview(URL.createObjectURL(file));
+              }}
+              onClear={() => {
+                setImageFile(null);
+                setImagePreview(car.image_url);
+              }}
+            />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -230,7 +219,6 @@ export default function CarEditForm({ car }: { car: Car }) {
                 )}
               />
             </div>
-
             <div className="flex gap-3">
               <Button type="submit" disabled={loading}>
                 {loading ? "Saving..." : "Save Changes"}

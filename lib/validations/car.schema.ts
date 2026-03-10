@@ -20,8 +20,20 @@ export const serviceRecordSchema = z.object({
     "tire_change",
     "registration",
   ]),
-  service_date: z.string().min(1, "Service date is required"),
-  next_service_date: z.string().optional(),
+  service_date: z
+    .string()
+    .min(1, "Service date is required")
+    .refine(
+      (date) => new Date(date) <= new Date(),
+      "Service date cannot be in the future",
+    ),
+  next_service_date: z
+    .string()
+    .refine(
+      (date) => !date || new Date(date) >= new Date(),
+      "Next service date cannot be in the past",
+    )
+    .optional(),
   mileage_at_service: z.string().optional(),
   notes: z.string().optional(),
 });

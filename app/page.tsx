@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "@/components/layout/Navbar";
+import { ArrowRight } from "lucide-react";
 
 export default async function LandingPage() {
   const supabase = await createClient();
@@ -37,13 +38,23 @@ export default async function LandingPage() {
 
             <div className="animate-fade-up animation-delay-300 flex items-center justify-center gap-4 flex-wrap">
               {user ? (
-                <Button size="lg" asChild className="h-12 px-8 text-base">
-                  <Link href="/dashboard">Go to Dashboard →</Link>
+                <Button size="xl" asChild>
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center gap-2 text-base"
+                  >
+                    Go to Dashboard <ArrowRight size={16} />
+                  </Link>
                 </Button>
               ) : (
                 <>
-                  <Button size="lg" asChild className="h-12 px-8 text-base">
-                    <Link href="/register">Start for free →</Link>
+                  <Button size="xl" asChild>
+                    <Link
+                      href="/register"
+                      className="flex items-center gap-2 text-base"
+                    >
+                      Start for free <ArrowRight size={16} />
+                    </Link>
                   </Button>
                   <Button
                     size="lg"
@@ -111,7 +122,7 @@ export default async function LandingPage() {
           <h2 className="text-3xl font-bold text-[#f0f0f0] mb-4">
             Always know what needs attention
           </h2>
-          <p className="text-[#9a9a9a] mb-10">
+          <p className="text-white mb-10">
             Color-coded status indicators show you at a glance what&apos;s
             overdue, due soon, or all good.
           </p>
@@ -150,12 +161,22 @@ export default async function LandingPage() {
             Create a free account and add your first car in minutes.
           </p>
           {user ? (
-            <Button size="lg" asChild className="h-12 px-8">
-              <Link href="/dashboard">Go to Dashboard →</Link>
+            <Button size="xl" asChild>
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-2 text-base"
+              >
+                Go to Dashboard <ArrowRight size={16} />
+              </Link>
             </Button>
           ) : (
-            <Button size="lg" asChild className="h-12 px-8">
-              <Link href="/register">Create free account →</Link>
+            <Button size="xl" asChild>
+              <Link
+                href="/register"
+                className="flex items-center gap-2 text-base"
+              >
+                Create free account <ArrowRight size={16} />
+              </Link>
             </Button>
           )}
         </div>
