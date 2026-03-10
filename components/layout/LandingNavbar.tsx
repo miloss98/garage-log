@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import NavbarUserMenu from "./NavbarUserMenu";
+import Logo from "../ui/Logo";
 
 export default async function LandingNavbar() {
   const supabase = await createClient();
@@ -12,13 +13,7 @@ export default async function LandingNavbar() {
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link
-          href="/"
-          className="font-bold text-xl text-slate-100 flex items-center gap-2"
-        >
-          <span className="text-2xl">🚗</span>
-          <span>Garage Log</span>
-        </Link>
+        <Logo href="/" dark />
         <div className="flex items-center gap-3">
           {user ? (
             <>

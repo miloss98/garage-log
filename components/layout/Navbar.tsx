@@ -5,6 +5,7 @@ import type { User } from "@supabase/supabase-js";
 import NavbarUserMenu from "./NavbarUserMenu";
 import { useUIStore } from "@/store/ui.store";
 import { Button } from "@/components/ui/button";
+import Logo from "../ui/Logo";
 
 export default function Navbar({ user }: { user: User }) {
   const { isMobileMenuOpen, toggleMobileMenu, closeMobileMenu } = useUIStore();
@@ -13,13 +14,7 @@ export default function Navbar({ user }: { user: User }) {
     <nav className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <Link
-            href="/dashboard"
-            className="font-bold text-xl flex items-center gap-2"
-          >
-            <span className="text-2xl">🚗</span>
-            <span>Garage Log</span>
-          </Link>
+          <Logo href="/dashboard" />
           <div className="hidden md:flex items-center gap-1">
             <Link
               href="/dashboard"

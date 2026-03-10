@@ -169,7 +169,7 @@ export default async function LandingPage() {
       <footer className="border-t border-slate-800">
         <div className="container mx-auto px-4 h-16 flex items-center justify-center">
           <p className="text-sm text-slate-500">
-            © {new Date().getFullYear()} Garage Log. Built with Next.js &
+            © {new Date().getFullYear()} GarageLog. Built with Next.js &
             Supabase.
           </p>
         </div>
