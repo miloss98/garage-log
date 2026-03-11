@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Pencil } from "lucide-react";
 import ServiceRecordList from "@/components/cars/ServiceRecordList";
 import DeleteCarButton from "@/components/cars/DeleteCarButton";
+import { formatMileage } from "@/lib/utils";
 
 export default async function CarDetailPage({
   params,
@@ -98,7 +99,7 @@ export default async function CarDetailPage({
             {car.mileage && (
               <div>
                 <span className="text-muted-foreground">Mileage</span>
-                <p className="font-medium">{car.mileage.toLocaleString()} km</p>
+                <p className="font-medium">{formatMileage(car.mileage)} km</p>
               </div>
             )}
           </div>

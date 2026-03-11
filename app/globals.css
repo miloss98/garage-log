@@ -188,3 +188,7 @@ h6 {
 .card-hover {
   @apply transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/5 hover:border-amber-500/30;
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}

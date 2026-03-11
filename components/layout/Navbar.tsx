@@ -6,7 +6,13 @@ import NavbarUserMenu from "@/components/layout/NavbarUserMenu";
 import { useUIStore } from "@/store/ui.store";
 import { Button } from "@/components/ui/button";
 
-export default function Navbar({ email }: { email: string | null }) {
+export default function Navbar({
+  email,
+  fullName,
+}: {
+  email: string | null;
+  fullName?: string | null;
+}) {
   const { isMobileMenuOpen, toggleMobileMenu, closeMobileMenu } = useUIStore();
   const isLoggedIn = !!email;
 
@@ -46,7 +52,7 @@ export default function Navbar({ email }: { email: string | null }) {
                 {isMobileMenuOpen ? "✕" : "☰"}
               </Button>
 
-              <NavbarUserMenu email={email} />
+              <NavbarUserMenu email={email} fullName={fullName} />
             </>
           ) : (
             <>

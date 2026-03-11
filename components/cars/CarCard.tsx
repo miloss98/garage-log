@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
+import { formatMileage } from "@/lib/utils";
 
 export default function CarCard({ car }: { car: Car }) {
   return (
@@ -23,7 +24,7 @@ export default function CarCard({ car }: { car: Car }) {
           className="w-full h-44 object-cover"
         />
       ) : (
-        <div className="w-full h-44 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+        <div className="w-full h-44 bg-linear-to-br from-slate-100 to-slate-200 flex items-center justify-center">
           <span className="text-6xl">🚗</span>
         </div>
       )}
@@ -62,7 +63,7 @@ export default function CarCard({ car }: { car: Car }) {
           <p>
             Mileage:{" "}
             <span className="text-foreground font-medium">
-              {car.mileage.toLocaleString()} km
+              {formatMileage(car.mileage)} km
             </span>
           </p>
         )}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useDashboard, type CarWithRecords } from "@/hooks/useDashboard";
+import { useDashboard } from "@/hooks/useDashboard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,14 +13,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
-
-const SERVICE_LABELS: Record<string, string> = {
-  oil_change: "Oil Change",
-  small_service: "Small Service",
-  big_service: "Big Service",
-  tire_change: "Tire Change",
-  registration: "Registration",
-};
+import { SERVICE_LABELS } from "@/lib/constants";
 
 function getServiceStatus(nextDate: string | null) {
   if (!nextDate) return null;

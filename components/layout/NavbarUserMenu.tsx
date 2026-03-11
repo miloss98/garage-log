@@ -12,11 +12,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { getInitials } from "@/lib/utils";
 
-export default function NavbarUserMenu({ email }: { email: string }) {
+export default function NavbarUserMenu({
+  email,
+  fullName,
+}: {
+  email: string;
+  fullName?: string | null;
+}) {
   const router = useRouter();
-  const initials = email.slice(0, 2).toUpperCase();
 
+  const initials = getInitials(fullName, email);
   async function handleLogout() {
     const supabase = createClient();
     await supabase.auth.signOut();

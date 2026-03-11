@@ -18,32 +18,10 @@ import {
 } from "@/components/ui/dialog";
 import ServiceRecordForm from "./ServiceRecordForm";
 import { toast } from "sonner";
-import {
-  Pencil,
-  Trash2,
-  X,
-  Droplets,
-  Wrench,
-  Settings,
-  CircleDot,
-  ClipboardList,
-} from "lucide-react";
+import { Pencil, Trash2, X, Wrench, Plus } from "lucide-react";
+import { SERVICE_LABELS, SERVICE_ICONS } from "@/lib/constants";
+import { formatDate } from "@/lib/utils";
 
-const SERVICE_LABELS: Record<string, string> = {
-  oil_change: "Oil Change",
-  small_service: "Small Service",
-  big_service: "Big Service",
-  tire_change: "Tire Change",
-  registration: "Registration",
-};
-
-const SERVICE_ICONS: Record<string, React.ReactNode> = {
-  oil_change: <Droplets size={16} className="text-amber-500" />,
-  small_service: <Wrench size={16} className="text-blue-500" />,
-  big_service: <Settings size={16} className="text-purple-500" />,
-  tire_change: <CircleDot size={16} className="text-gray-500" />,
-  registration: <ClipboardList size={16} className="text-green-500" />,
-};
 function getStatusBadge(nextServiceDate: string | null) {
   if (!nextServiceDate) return null;
 
@@ -151,12 +129,19 @@ export default function ServiceRecordList({
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold">Service Records</h2>
         <Button
+          className="flex items-center gap-2"
           onClick={() => {
             setShowForm(!showForm);
             setEditingRecord(null);
           }}
         >
-          {showForm ? "Cancel" : "+ Add Record"}
+          {showForm ? (
+            "Cancel"
+          ) : (
+            <>
+              <Plus size={16} /> Add Record
+            </>
+          )}
         </Button>
       </div>
 
@@ -212,7 +197,7 @@ export default function ServiceRecordList({
                   <p>
                     Service date:{" "}
                     <span className="text-foreground font-medium">
-                      {new Date(record.service_date).toLocaleDateString()}
+                      {formatDate(record.service_date)}
                     </span>
                   </p>
                   {record.next_service_date && (

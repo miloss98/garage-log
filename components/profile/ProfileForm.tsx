@@ -23,6 +23,7 @@ import {
   ProfileFormData,
   profileSchema,
 } from "@/lib/validations/profile.schema";
+import { getInitials } from "@/lib/utils";
 
 export default function ProfileForm({
   profile,
@@ -40,9 +41,7 @@ export default function ProfileForm({
     },
   });
 
-  const initials = profile?.full_name
-    ? profile.full_name.slice(0, 2).toUpperCase()
-    : email.slice(0, 2).toUpperCase();
+  const initials = getInitials(profile?.full_name, email);
 
   async function onSubmit(data: ProfileFormData) {
     setLoading(true);

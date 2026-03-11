@@ -157,6 +157,10 @@ export default function ServiceRecordForm({
                     <FormControl>
                       <Input
                         type="date"
+                        className="cursor-pointer"
+                        onClick={(e) =>
+                          (e.target as HTMLInputElement).showPicker()
+                        }
                         max={new Date().toISOString().split("T")[0]}
                         {...field}
                       />
@@ -174,6 +178,10 @@ export default function ServiceRecordForm({
                     <FormControl>
                       <Input
                         type="date"
+                        className="cursor-pointer"
+                        onClick={(e) =>
+                          (e.target as HTMLInputElement).showPicker()
+                        }
                         min={new Date().toISOString().split("T")[0]}
                         {...field}
                       />

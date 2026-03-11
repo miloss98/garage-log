@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import CarList from "@/components/cars/CarList";
+import { Plus } from "lucide-react";
 
 export default function CarsPage() {
   return (
@@ -13,7 +14,9 @@ export default function CarsPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href="/dashboard/cars/new">+ Add Car</Link>
+          <Link href="/dashboard/cars/new">
+            <Plus size={16} /> Add Car
+          </Link>
         </Button>
       </div>
       <CarList />
