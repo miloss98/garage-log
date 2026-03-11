@@ -26,7 +26,7 @@ export default async function ProtectedLayout({
         email={user.email ?? null}
         fullName={profile?.full_name ?? null}
       />
-      <main className="container mx-auto px-4 py-8">{children}</main>
+      <main className="container mx-auto px-5 py-8">{children}</main>
     </div>
   );
 }

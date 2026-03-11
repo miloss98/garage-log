@@ -16,14 +16,14 @@ export default async function LandingPage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="relative container mx-auto px-4 py-32 text-center">
+        <div className="relative container mx-auto px-5 py-20 md:py-24 lg:py-32 text-center">
           <div className="max-w-4xl mx-auto">
-            <div className="animate-fade-up inline-flex items-center gap-2 bg-amber-400/10 border border-amber-500/20 text-amber-400 text-sm px-4 py-1.5 rounded-full mb-8">
+            <div className="animate-fade-up inline-flex items-center gap-2 bg-amber-400/10 border border-amber-500/20 text-amber-400 text-sm px-5 py-1.5 rounded-full mb-8">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
               Free · No credit card required
             </div>
 
-            <h1 className="animate-fade-up animation-delay-100 text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-linear-to-b from-slate-100 to-slate-400 bg-clip-text text-transparent leading-tight">
+            <h1 className="animate-fade-up animation-delay-100 text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 bg-linear-to-b from-slate-100 to-slate-400 bg-clip-text text-transparent leading-tight">
               Never miss a car
               <br />
               service again
@@ -70,7 +70,7 @@ export default async function LandingPage() {
       </section>
 
       {/* Features */}
-      <section className="container mx-auto px-4 py-24">
+      <section className="container mx-auto px-5 py-10 md:py-16 lg:py-24">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-[#f0f0f0] mb-4">
             Everything you need to stay on top of maintenance
@@ -115,7 +115,7 @@ export default async function LandingPage() {
       </section>
 
       {/* Status section */}
-      <section className="container mx-auto px-4 py-16">
+      <section className="container mx-auto px-5 py-16">
         <div className="max-w-3xl mx-auto rounded-2xl border border-[#333333] bg-[#242424]/50 p-12 text-center">
           <h2 className="text-3xl font-bold text-[#f0f0f0] mb-4">
             Always know what needs attention
@@ -150,7 +150,7 @@ export default async function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="container mx-auto px-4 py-24 text-center">
+      <section className="container mx-auto px-5 py-12 md:py-20 lg:py-24 text-center">
         <div className="max-w-xl mx-auto">
           <h2 className="text-3xl font-bold text-[#f0f0f0] mb-4">
             Ready to get started?
@@ -182,7 +182,7 @@ export default async function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-[#333333]">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-center">
+        <div className="container mx-auto px-5 h-16 flex items-center justify-center">
           <p className="text-sm text-[#707070]">
             © {new Date().getFullYear()} GarageLog. Built with Next.js &
             Supabase.

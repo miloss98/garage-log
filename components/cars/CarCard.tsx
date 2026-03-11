@@ -74,7 +74,7 @@ export default function CarCard({ car }: { car: Car }) {
             href={`/dashboard/cars/${car.id}`}
             className="flex items-center justify-center gap-2"
           >
-            View Details <ArrowRight size={16} />
+            View Details <ArrowRight size={13} />
           </Link>
         </Button>
       </CardFooter>

@@ -55,14 +55,14 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#242424] flex flex-col">
+    <div className="min-h-screen bg-[#1a1a1a]  flex flex-col">
       {/* Header */}
       <div className="relative z-10 p-6">
         <Logo href="/" dark />
       </div>
 
       {/* Form */}
-      <div className="relative z-10 flex-1 flex items-center justify-center px-4 pb-16">
+      <div className="relative z-10 flex-1 flex items-center justify-center px-5 pb-16">
         <div className="w-full max-w-sm">
           <div className="text-center mb-8">
             <h1

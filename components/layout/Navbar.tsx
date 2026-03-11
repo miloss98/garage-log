@@ -5,6 +5,7 @@ import Logo from "@/components/ui/Logo";
 import NavbarUserMenu from "@/components/layout/NavbarUserMenu";
 import { useUIStore } from "@/store/ui.store";
 import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar({
   email,
@@ -18,7 +19,7 @@ export default function Navbar({
 
   return (
     <nav className="sticky top-0 z-50 border-b border-[#333333] bg-[#1a1a1a]/90 backdrop-blur-md">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="container mx-auto px-5 h-16 flex items-center justify-between">
         {/* Left — Logo */}
         <Logo href="/" dark />
 
@@ -44,12 +45,11 @@ export default function Navbar({
 
               {/* Mobile toggle */}
               <Button
-                variant="ghost"
-                size="sm"
+                variant="outline"
                 className="md:hidden text-[#9a9a9a] hover:text-[#f0f0f0] hover:bg-[#2e2e2e]"
                 onClick={toggleMobileMenu}
               >
-                {isMobileMenuOpen ? "✕" : "☰"}
+                {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
               </Button>
 
               <NavbarUserMenu email={email} fullName={fullName} />
@@ -76,17 +76,17 @@ export default function Navbar({
 
       {/* Mobile menu */}
       {isLoggedIn && isMobileMenuOpen && (
-        <div className="md:hidden border-t border-[#333333] bg-[#1a1a1a] px-4 py-4 flex flex-col gap-1 animate-fade-in">
+        <div className="md:hidden border-t border-[#333333] bg-[#1a1a1a] px-5 py-3 flex flex-col gap-1 animate-fade-in">
           <Link
             href="/dashboard"
-            className="text-sm font-medium text-[#9a9a9a] hover:text-[#f0f0f0] px-3 py-2 rounded-md hover:bg-[#2e2e2e] transition-colors"
+            className="text-sm font-medium text-[#9a9a9a] hover:text-[#f0f0f0] px-3 py-2.5 rounded-md hover:bg-[#2e2e2e] transition-colors block w-full"
             onClick={closeMobileMenu}
           >
             Dashboard
           </Link>
           <Link
             href="/dashboard/cars"
-            className="text-sm font-medium text-[#9a9a9a] hover:text-[#f0f0f0]px-3 py-2 rounded-md hover:bg-[#2e2e2e] transition-colors"
+            className="text-sm font-medium text-[#9a9a9a] hover:text-[#f0f0f0] px-3 py-2.5 rounded-md hover:bg-[#2e2e2e] transition-colors block w-full"
             onClick={closeMobileMenu}
           >
             My Cars

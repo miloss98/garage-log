@@ -125,9 +125,9 @@ export default function ServiceRecordList({
   );
 
   return (
-    <div>
+    <div className="py-6 md:py-12">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-bold">Service Records</h2>
+        <h2 className="text-xl md:text-2xl font-bold">Service Records</h2>
         <Button
           className="flex items-center gap-2"
           onClick={() => {

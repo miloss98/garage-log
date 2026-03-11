@@ -68,8 +68,12 @@ export default function DashboardSummary({ userName }: { userName: string }) {
     <div className="space-y-8">
       {/* Welcome */}
       <div>
-        <h1 className="text-3xl font-bold mb-1">
-          Welcome back{userName ? `, ${userName}` : ""} 👋
+        <h1 className="text-2xl md:text-3xl font-bold mb-1">
+          Welcome back, <br className="md:hidden" />
+          <span className="text-amber-500">
+            {userName ? `${userName}` : ""}
+          </span>{" "}
+          👋
         </h1>
         <p className="text-muted-foreground">
           Here&apos;s an overview of your vehicles
@@ -79,7 +83,7 @@ export default function DashboardSummary({ userName }: { userName: string }) {
       {/* Stat cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="border-l border-l-blue-500 shadow-[0_8px_12px_rgba(59,130,246,0.15)]">
-          <CardContent className="pt-6 pb-6">
+          <CardContent className="py-0 md:py-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground mb-1">
@@ -95,7 +99,7 @@ export default function DashboardSummary({ userName }: { userName: string }) {
         </Card>
 
         <Card className="border-l border-l-red-500 shadow-[0_8px_12px_rgba(239,68,68,0.15)]">
-          <CardContent className="pt-6 pb-6">
+          <CardContent className="py-0 md:py-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground mb-1">
@@ -111,7 +115,7 @@ export default function DashboardSummary({ userName }: { userName: string }) {
         </Card>
 
         <Card className="border-l border-l-amber-500 shadow-[0_8px_12px_rgba(245,158,11,0.15)]">
-          <CardContent className="pt-6 pb-6">
+          <CardContent className="py-0 md:py-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-white mb-1">Due Soon</p>
@@ -191,7 +195,8 @@ export default function DashboardSummary({ userName }: { userName: string }) {
                         href={`/dashboard/cars/${alert.car.id}`}
                         className="flex items-center gap-1.5"
                       >
-                        View <ArrowRight size={13} />
+                        <span className="md:flex hidden">View</span>{" "}
+                        <ArrowRight size={16} />
                       </Link>
                     </Button>
                   </div>
