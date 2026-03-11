@@ -3,6 +3,10 @@ import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "@/components/layout/Navbar";
 import { ArrowRight } from "lucide-react";
+import type { Metadata } from "next";
+import { AppMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = AppMetadata;
 
 export default async function LandingPage() {
   const supabase = await createClient();

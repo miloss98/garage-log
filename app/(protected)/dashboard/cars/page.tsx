@@ -2,6 +2,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import CarList from "@/components/cars/CarList";
 import { Plus } from "lucide-react";
+import type { Metadata } from "next";
+import { CarsMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = CarsMetadata;
 
 export default function CarsPage() {
   return (

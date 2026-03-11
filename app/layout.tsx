@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import QueryProvider from "@/components/providers/QueryProvider";
+import { LayoutMetadata } from "@/lib/seo";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -16,11 +17,7 @@ const dmSans = DM_Sans({
   weight: ["400", "500", "600"],
 });
 
-export const metadata: Metadata = {
-  title: "Garage Log",
-  description:
-    "Track your car maintenance, services and registration deadlines.",
-};
+export const metadata: Metadata = LayoutMetadata;
 
 export default function RootLayout({
   children,
