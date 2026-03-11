@@ -35,7 +35,7 @@ export default function ImageUpload({
           "relative w-full rounded-xl border-2 border-dashed transition-all duration-200 cursor-pointer group",
           preview
             ? "border-transparent"
-            : "border-border hover:border-amber-400 hover:bg-amber-50/50",
+            : "border-border hover:border-amber-400",
         )}
       >
         {preview ? (

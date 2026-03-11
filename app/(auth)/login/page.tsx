@@ -52,11 +52,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-[#1a1a1a] flex flex-col">
-      {/* Background glow */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[500px] bg-amber-500/10 rounded-full blur-3xl" />
-      </div>
-
       {/* Header */}
       <div className="relative z-10 p-6">
         <Logo href="/" dark />
@@ -77,7 +72,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <div className="bg-[#242424] border bg-[#2e2e2e] rounded-2xl p-6">
+          <div className="bg-[#242424] border  rounded-2xl p-6">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -126,7 +121,7 @@ export default function LoginPage() {
                 )}
                 <Button
                   type="submit"
-                  className="w-full bg-amber-600 hover:bg-amber-500 text-white h-10 flex items-center gap-2"
+                  className="w-full  h-10 flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
                   disabled={loading}
                 >
                   {loading ? (

@@ -16,8 +16,6 @@ export default async function LandingPage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        {/* Background glow */}
-
         <div className="relative container mx-auto px-4 py-32 text-center">
           <div className="max-w-4xl mx-auto">
             <div className="animate-fade-up inline-flex items-center gap-2 bg-amber-400/10 border border-amber-500/20 text-amber-400 text-sm px-4 py-1.5 rounded-full mb-8">
@@ -25,7 +23,7 @@ export default async function LandingPage() {
               Free · No credit card required
             </div>
 
-            <h1 className="animate-fade-up animation-delay-100 text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-gradient-to-b from-slate-100 to-slate-400 bg-clip-text text-transparent leading-tight">
+            <h1 className="animate-fade-up animation-delay-100 text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-linear-to-b from-slate-100 to-slate-400 bg-clip-text text-transparent leading-tight">
               Never miss a car
               <br />
               service again

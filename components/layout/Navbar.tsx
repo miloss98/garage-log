@@ -59,7 +59,7 @@ export default function Navbar({ email }: { email: string | null }) {
               </Button>
               <Button
                 asChild
-                className="bg-amber-500 hover:bg-amber-400 text-white"
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 <Link href="/register">Get Started</Link>
               </Button>
