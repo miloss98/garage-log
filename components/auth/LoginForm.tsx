@@ -125,6 +125,7 @@ export default function LoginPage() {
                 )}
                 <Button
                   type="submit"
+                  aria-label="Sign in to your account"
                   className="w-full  h-10 flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
                   disabled={loading}
                 >

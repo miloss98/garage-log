@@ -60,12 +60,14 @@ export default function Navbar({
               <Button
                 variant="ghost"
                 asChild
+                aria-label="Sign in to your account"
                 className="text-[#9a9a9a] hover:text-[#f0f0f0] hover:bg-[#2e2e2e]"
               >
                 <Link href="/login">Sign in</Link>
               </Button>
               <Button
                 asChild
+                aria-label="Create a new account"
                 className="bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 <Link href="/register">Get Started</Link>
