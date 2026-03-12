@@ -46,6 +46,7 @@ export default function DeleteCarButton({ carId }: { carId: string }) {
           variant="outline"
           size="icon"
           className="text-destructive hover:text-destructive hover:bg-destructive/10 hover:border-destructive/30"
+          aria-label="Delete car"
         >
           <Trash2 size={16} />
         </Button>
@@ -62,6 +63,7 @@ export default function DeleteCarButton({ carId }: { carId: string }) {
           <Button
             className="cursor-pointer"
             variant="outline"
+            aria-label="Cancel car deletion"
             onClick={() => setOpen(false)}
             disabled={loading}
           >
@@ -72,6 +74,7 @@ export default function DeleteCarButton({ carId }: { carId: string }) {
             onClick={handleDelete}
             disabled={loading}
             className="cursor-pointer"
+            aria-label="Confirm car deletion"
           >
             {loading ? "Deleting..." : "Yes, delete"}
           </Button>

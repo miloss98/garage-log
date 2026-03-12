@@ -81,6 +81,7 @@ function DeleteRecordButton({ recordId }: { recordId: string }) {
         <Button
           variant="outline"
           size="icon"
+          aria-label="Delete service record"
           className="text-destructive  hover:text-destructive hover:bg-destructive/10 cursor-pointer"
         >
           <Trash2 size={15} />
@@ -176,6 +177,7 @@ export default function ServiceRecordList({
                         variant="outline"
                         size="icon"
                         className="cursor-pointer "
+                        aria-label="Edit service record"
                         onClick={() => {
                           setEditingRecord(
                             editingRecord?.id === record.id ? null : record,

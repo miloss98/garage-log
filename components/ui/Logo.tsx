@@ -14,6 +14,7 @@ export default function Logo({
   return (
     <Link
       href={href}
+      aria-label="GarageLog home"
       className={cn("flex items-center gap-2.5 group", className)}
     >
       {/* Icon */}

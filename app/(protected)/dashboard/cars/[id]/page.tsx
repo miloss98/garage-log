@@ -35,13 +35,18 @@ export default async function CarDetailPage({
     <div className="max-w-4xl mx-auto">
       {/* Top bar */}
       <div className="flex items-center justify-between mb-6">
-        <Button variant="outline" size="icon" asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          asChild
+          aria-label="Back to My Cars"
+        >
           <Link href="/dashboard/cars">
             <ArrowLeft size={16} />
           </Link>
         </Button>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="icon" asChild>
+          <Button variant="outline" size="icon" asChild aria-label="Edit car">
             <Link href={`/dashboard/cars/${car.id}/edit`}>
               <Pencil size={16} />
             </Link>
@@ -56,7 +61,7 @@ export default async function CarDetailPage({
           <div className="relative w-full md:w-64 h-48">
             <Image
               src={car.image_url}
-              alt={car.name}
+              alt={`${car.name} - ${car.model ?? "car photo"}`}
               fill
               className="object-cover rounded-lg"
               sizes="(max-width: 768px) 100vw, 256px"

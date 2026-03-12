@@ -16,7 +16,7 @@ export default function CarCard({ car }: { car: Car }) {
         <div className="relative w-full h-44 overflow-hidden">
           <Image
             src={car.image_url}
-            alt={car.name}
+            alt={`${car.name} - ${car.model ?? "car photo"}`}
             fill
             sizes="(max-width: 768px) 100vw, 400px"
             className="object-cover"

@@ -46,6 +46,7 @@ export default function Navbar({
               {/* Mobile toggle */}
               <Button
                 variant="outline"
+                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
                 className="md:hidden text-[#9a9a9a] hover:text-[#f0f0f0] hover:bg-[#2e2e2e]"
                 onClick={toggleMobileMenu}
               >
