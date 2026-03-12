@@ -99,7 +99,7 @@ export default async function CarDetailPage({
             {car.mileage && (
               <div>
                 <span className="text-muted-foreground">Mileage</span>
-                <p className="font-medium">{formatMileage(car.mileage)} km</p>
+                <p className="font-medium">{formatMileage(car.mileage)} </p>
               </div>
             )}
           </div>

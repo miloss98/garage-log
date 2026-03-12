@@ -204,9 +204,7 @@ export default function ServiceRecordList({
                     <p>
                       Next service:{" "}
                       <span className="text-foreground font-medium">
-                        {new Date(
-                          record.next_service_date,
-                        ).toLocaleDateString()}
+                        {formatDate(record.next_service_date)}
                       </span>
                     </p>
                   )}
