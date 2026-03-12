@@ -25,11 +25,20 @@ export const LayoutMetadata: Metadata = {
     description:
       "Never miss a car service again. Track oil changes, services, tire changes and registration deadlines.",
     siteName: "GarageLog",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "GarageLog — Never miss a car service again",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "GarageLog",
     description: "Never miss a car service again.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
