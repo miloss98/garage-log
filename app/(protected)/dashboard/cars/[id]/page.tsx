@@ -7,6 +7,7 @@ import { ArrowLeft, Pencil } from "lucide-react";
 import ServiceRecordList from "@/components/cars/ServiceRecordList";
 import DeleteCarButton from "@/components/cars/DeleteCarButton";
 import { formatMileage } from "@/lib/utils";
+import Image from "next/image";
 
 export default async function CarDetailPage({
   params,
@@ -52,11 +53,17 @@ export default async function CarDetailPage({
       {/* Car header */}
       <div className="flex flex-col md:flex-row gap-6 mb-8">
         {car.image_url ? (
-          <img
-            src={car.image_url}
-            alt={car.name}
-            className="w-full md:w-64 h-48 object-cover rounded-lg"
-          />
+          <div className="relative w-full md:w-64 h-48">
+            <Image
+              src={car.image_url}
+              alt={car.name}
+              fill
+              className="object-cover rounded-lg"
+              sizes="(max-width: 768px) 100vw, 256px"
+              loading="eager"
+              priority
+            />
+          </div>
         ) : (
           <div className="w-full md:w-64 h-48 bg-muted rounded-lg flex items-center justify-center">
             <span className="text-6xl">🚗</span>

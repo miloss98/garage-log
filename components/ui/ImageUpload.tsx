@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { ImagePlus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface ImageUploadProps {
   preview: string | null;
@@ -40,11 +41,17 @@ export default function ImageUpload({
       >
         {preview ? (
           <div className="relative">
-            <img
-              src={preview}
-              alt="Car preview"
-              className="w-full h-52 object-cover rounded-xl"
-            />
+            <div className="relative w-full h-52">
+              <Image
+                src={preview}
+                alt="Car preview"
+                fill
+                className="object-cover rounded-xl"
+                sizes="100vw"
+                loading="eager"
+                priority
+              />
+            </div>
             {/* Overlay on hover */}
             <div className="absolute inset-0 bg-black/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
               <div className="flex items-center gap-2 text-white text-sm font-medium">
