@@ -3,7 +3,8 @@ import { toApiError } from "./errors";
 export { ApiError } from "./errors";
 
 // Browser requests go to our own domain ("/api/..."). next.config.ts rewrites
-// them to NEXT_PUBLIC_API_URL, so the auth cookie is first-party.
+// them to API_URL, so the auth cookie is first-party. The browser never
+// needs the real API URL, which is why it has no NEXT_PUBLIC_ prefix.
 const BASE_URL = "/api";
 
 type ApiOptions = {

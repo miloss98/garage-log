@@ -6,7 +6,7 @@ import type { User } from "@/types";
 
 // Server components can't use the "/api" rewrite (there is no browser),
 // so they call the API directly and forward the user's token cookie by hand.
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_URL;
 
 async function request(path: string) {
   const token = (await cookies()).get("token")?.value;

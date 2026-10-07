@@ -41,7 +41,7 @@ GarageLog is a full-stack car maintenance tracker built with Next.js 16 and a cu
 ## Environment
 
 ```
-NEXT_PUBLIC_API_URL=https://garage-log-api-rprd.onrender.com
+API_URL=https://garage-log-api-rprd.onrender.com
 ```
 
 Browser requests go to `/api/*` on the app's own domain and are proxied to the API by a rewrite in `next.config.ts`, so the API's auth cookie is first-party.
