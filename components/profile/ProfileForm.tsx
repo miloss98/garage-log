@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createClient } from "@/lib/supabase/client";
-
-import type { Profile } from "@/types";
+import { useRouter } from "next/navigation";
+import { apiFetch } from "@/lib/api/client";
+import type { User } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,34 +25,26 @@ import {
 } from "@/lib/validations/profile.schema";
 import { getInitials } from "@/lib/utils";
 
-export default function ProfileForm({
-  profile,
-  email,
-}: {
-  profile: Profile | null;
-  email: string;
-}) {
+export default function ProfileForm({ user }: { user: User }) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { email } = user;
 
   const form = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      full_name: profile?.full_name ?? "",
+      full_name: user.full_name ?? "",
     },
   });
 
-  const initials = getInitials(profile?.full_name, email);
+  const initials = getInitials(user.full_name, email);
 
   async function onSubmit(data: ProfileFormData) {
     setLoading(true);
-    const supabase = createClient();
 
-    const { error } = await supabase
-      .from("profiles")
-      .update({ full_name: data.full_name })
-      .eq("id", profile?.id);
-
-    if (error) {
+    try {
+      await apiFetch("/auth/me", { method: "PATCH", body: data });
+    } catch {
       toast.error("Failed to update profile");
       setLoading(false);
       return;
@@ -60,6 +52,8 @@ export default function ProfileForm({
 
     toast.success("Profile updated!");
     setLoading(false);
+    // Re-runs the server components, so the navbar and avatar get the new name.
+    router.refresh();
   }
 
   return (
@@ -74,7 +68,7 @@ export default function ProfileForm({
             <AvatarFallback className="text-xl">{initials}</AvatarFallback>
           </Avatar>
           <div>
-            <p className="font-medium">{profile?.full_name ?? "No name set"}</p>
+            <p className="font-medium">{user.full_name ?? "No name set"}</p>
             <p className="text-sm text-muted-foreground">{email}</p>
           </div>
         </CardContent>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { apiFetch, ApiError } from "@/lib/api/client";
 import { loginSchema, type LoginFormData } from "@/lib/validations/auth.schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,15 +37,11 @@ export default function LoginPage() {
   async function onSubmit(data: LoginFormData) {
     setLoading(true);
     setError(null);
-    const supabase = createClient();
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
-    });
-
-    if (error) {
-      setError(error.message);
+    try {
+      // The API responds with Set-Cookie: token=...; the browser stores it.
+      await apiFetch("/auth/login", { method: "POST", body: data });
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Something went wrong");
       setLoading(false);
       return;
     }

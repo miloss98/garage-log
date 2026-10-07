@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { apiFetch, ApiError } from "@/lib/api/client";
 import {
   registerSchema,
   type RegisterFormData,
@@ -40,16 +40,11 @@ export default function RegisterPage() {
   async function onSubmit(data: RegisterFormData) {
     setLoading(true);
     setError(null);
-    const supabase = createClient();
-
-    const { error } = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
-      options: { data: { full_name: data.full_name } },
-    });
-
-    if (error) {
-      setError(error.message);
+    try {
+      // Register also sets the token cookie, so the user is logged in right away.
+      await apiFetch("/auth/register", { method: "POST", body: data });
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Something went wrong");
       setLoading(false);
       return;
     }

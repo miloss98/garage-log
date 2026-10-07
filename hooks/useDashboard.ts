@@ -1,30 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { createClient } from "@/lib/supabase/client";
-import type { Car, ServiceRecord } from "@/types";
+import { fetchCars } from "@/hooks/useCars";
 
-export type CarWithRecords = Car & {
-  service_records: ServiceRecord[];
-};
-
+// Same request and cache key as useCars: the dashboard just needs
+// the cars with their service records, which GET /cars already returns.
 export function useDashboard() {
-  const supabase = createClient();
-
   return useQuery({
-    queryKey: ["dashboard"],
-    queryFn: async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
-
-      const { data, error } = await supabase
-        .from("cars")
-        .select("*, service_records(*)")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      return data as CarWithRecords[];
-    },
+    queryKey: ["cars"],
+    queryFn: fetchCars,
   });
 }

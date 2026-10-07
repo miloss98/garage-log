@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 import { formatMileage } from "@/lib/utils";
 import Image from "next/image";
+import { FUEL_LABELS } from "@/lib/constants";
 
 export default function CarCard({ car }: { car: Car }) {
   return (
@@ -33,9 +34,7 @@ export default function CarCard({ car }: { car: Car }) {
         <div className="flex items-center justify-between mb-2">
           <CardTitle className="text-lg">{car.name}</CardTitle>
           {car.fuel_type && (
-            <Badge variant="secondary" className="capitalize">
-              {car.fuel_type}
-            </Badge>
+            <Badge variant="secondary">{FUEL_LABELS[car.fuel_type]}</Badge>
           )}
         </div>
         <div className="space-y-1 text-sm text-muted-foreground pb-4">
@@ -51,11 +50,11 @@ export default function CarCard({ car }: { car: Car }) {
               <span className="text-foreground font-medium">{car.year}</span>
             </p>
           )}
-          {car.license_plate && (
+          {car.licence_plate && (
             <p>
               Plate:{" "}
               <span className="text-foreground font-medium">
-                {car.license_plate}
+                {car.licence_plate}
               </span>
             </p>
           )}

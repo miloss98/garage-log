@@ -3,22 +3,37 @@ import { z } from "zod";
 export const carSchema = z.object({
   name: z.string().min(1, "Car name is required"),
   model: z.string().optional(),
-  year: z.string().optional(),
+  year: z.string().min(1, "Year is required"),
   color: z.string().optional(),
-  fuel_type: z.enum(["petrol", "diesel", "electric", "hybrid"]).optional(),
-  license_plate: z.string().optional(),
+  fuel_type: z.enum(["PETROL", "DIESEL", "ELECTRIC", "HYBRID"]).optional(),
+  licence_plate: z.string().optional(),
   mileage: z.string().optional(),
 });
 
 export type CarFormData = z.infer<typeof carSchema>;
 
+// Form inputs are strings; the API wants numbers, and null for "empty".
+// fuel_type is left undefined when unset so the API default (PETROL) applies.
+export function toCarPayload(data: CarFormData, image_url: string | null) {
+  return {
+    name: data.name,
+    year: parseInt(data.year),
+    model: data.model || null,
+    color: data.color || null,
+    licence_plate: data.licence_plate || null,
+    mileage: data.mileage ? parseInt(data.mileage) : null,
+    fuel_type: data.fuel_type,
+    image_url,
+  };
+}
+
 export const serviceRecordSchema = z.object({
   type: z.enum([
-    "oil_change",
-    "small_service",
-    "big_service",
-    "tire_change",
-    "registration",
+    "OIL_CHANGE",
+    "SMALL_SERVICE",
+    "BIG_SERVICE",
+    "TIRE_CHANGE",
+    "REGISTRATION",
   ]),
   service_date: z
     .string()

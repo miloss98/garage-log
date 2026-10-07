@@ -4,7 +4,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
+import { apiFetch, ApiError } from "@/lib/api/client";
+import { toDateInputValue } from "@/lib/utils";
 import {
   serviceRecordSchema,
   type ServiceRecordFormData,
@@ -41,6 +43,7 @@ export default function ServiceRecordForm({
   onSuccess: () => void;
 }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const isEditing = !!existingRecord;
 
@@ -48,8 +51,8 @@ export default function ServiceRecordForm({
     resolver: zodResolver(serviceRecordSchema),
     defaultValues: {
       type: existingRecord?.type ?? undefined,
-      service_date: existingRecord?.service_date ?? "",
-      next_service_date: existingRecord?.next_service_date ?? "",
+      service_date: toDateInputValue(existingRecord?.service_date),
+      next_service_date: toDateInputValue(existingRecord?.next_service_date),
       mileage_at_service: existingRecord?.mileage_at_service
         ? String(existingRecord.mileage_at_service)
         : "",
@@ -59,10 +62,8 @@ export default function ServiceRecordForm({
 
   async function onSubmit(data: ServiceRecordFormData) {
     setLoading(true);
-    const supabase = createClient();
-
+    // No car_id in the body: it's part of the URL (/cars/:carId/service-records).
     const payload = {
-      car_id: carId,
       type: data.type,
       service_date: data.service_date,
       next_service_date: data.next_service_date || null,
@@ -72,21 +73,31 @@ export default function ServiceRecordForm({
       notes: data.notes || null,
     };
 
-    const { error } = isEditing
-      ? await supabase
-          .from("service_records")
-          .update(payload)
-          .eq("id", existingRecord.id)
-      : await supabase.from("service_records").insert(payload);
+    const basePath = `/cars/${carId}/service-records`;
 
-    if (error) {
+    try {
+      if (isEditing) {
+        await apiFetch(`${basePath}/${existingRecord.id}`, {
+          method: "PUT",
+          body: payload,
+        });
+      } else {
+        await apiFetch(basePath, { method: "POST", body: payload });
+      }
+    } catch (err) {
       toast.error(
-        isEditing ? "Failed to update record" : "Failed to add record",
+        err instanceof ApiError
+          ? err.message
+          : isEditing
+            ? "Failed to update record"
+            : "Failed to add record",
       );
       setLoading(false);
       return;
     }
 
+    // Records feed the dashboard alerts, which come from the ["cars"] query.
+    queryClient.invalidateQueries({ queryKey: ["cars"] });
     toast.success(isEditing ? "Record updated!" : "Record added!");
     router.refresh();
     onSuccess();
@@ -114,19 +125,19 @@ export default function ServiceRecordForm({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="oil_change">
+                        <SelectItem value="OIL_CHANGE">
                           🛢️ Oil Change
                         </SelectItem>
-                        <SelectItem value="small_service">
+                        <SelectItem value="SMALL_SERVICE">
                           🔧 Small Service
                         </SelectItem>
-                        <SelectItem value="big_service">
+                        <SelectItem value="BIG_SERVICE">
                           ⚙️ Big Service
                         </SelectItem>
-                        <SelectItem value="tire_change">
+                        <SelectItem value="TIRE_CHANGE">
                           🔄 Tire Change
                         </SelectItem>
-                        <SelectItem value="registration">
+                        <SelectItem value="REGISTRATION">
                           📋 Registration
                         </SelectItem>
                       </SelectContent>

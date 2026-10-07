@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
+import { apiFetch } from "@/lib/api/client";
 import type { ServiceRecord } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -50,26 +51,32 @@ function getStatusBadge(nextServiceDate: string | null) {
   );
 }
 
-function DeleteRecordButton({ recordId }: { recordId: string }) {
+function DeleteRecordButton({
+  carId,
+  recordId,
+}: {
+  carId: string;
+  recordId: string;
+}) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function handleDelete() {
     setLoading(true);
-    const supabase = createClient();
 
-    const { error } = await supabase
-      .from("service_records")
-      .delete()
-      .eq("id", recordId);
-
-    if (error) {
+    try {
+      await apiFetch(`/cars/${carId}/service-records/${recordId}`, {
+        method: "DELETE",
+      });
+    } catch {
       toast.error("Failed to delete record");
       setLoading(false);
       return;
     }
 
+    queryClient.invalidateQueries({ queryKey: ["cars"] });
     toast.success("Record deleted");
     setOpen(false);
     router.refresh();
@@ -191,7 +198,10 @@ export default function ServiceRecordList({
                           <Pencil size={15} />
                         )}
                       </Button>
-                      <DeleteRecordButton recordId={record.id} />
+                      <DeleteRecordButton
+                        carId={carId}
+                        recordId={record.id}
+                      />
                     </div>
                   </div>
                 </CardHeader>
