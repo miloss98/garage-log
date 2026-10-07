@@ -1,4 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
+import { serverFetch } from "@/lib/api/server";
+import type { Car, ServiceRecord } from "@/types";
+import { FUEL_LABELS } from "@/lib/constants";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -15,21 +17,15 @@ export default async function CarDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
-
-  const { data: car } = await supabase
-    .from("cars")
-    .select("*")
-    .eq("id", id)
-    .single();
+  // Both requests run in parallel instead of one after the other.
+  const [{ car }, { serviceRecords }] = await Promise.all([
+    serverFetch<{ car: Car | null }>(`/cars/${id}`),
+    serverFetch<{ serviceRecords: ServiceRecord[] }>(
+      `/cars/${id}/service-records`,
+    ),
+  ]);
 
   if (!car) notFound();
-
-  const { data: serviceRecords } = await supabase
-    .from("service_records")
-    .select("*")
-    .eq("car_id", id)
-    .order("service_date", { ascending: false });
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -78,9 +74,7 @@ export default async function CarDetailPage({
           <div className="flex items-center gap-3 mb-2">
             <h1 className="text-3xl font-bold">{car.name}</h1>
             {car.fuel_type && (
-              <Badge variant="secondary" className="capitalize">
-                {car.fuel_type}
-              </Badge>
+              <Badge variant="secondary">{FUEL_LABELS[car.fuel_type]}</Badge>
             )}
           </div>
           <div className="grid grid-cols-2 gap-2 text-sm mt-4">
@@ -102,10 +96,10 @@ export default async function CarDetailPage({
                 <p className="font-medium">{car.color}</p>
               </div>
             )}
-            {car.license_plate && (
+            {car.licence_plate && (
               <div>
                 <span className="text-muted-foreground">License Plate</span>
-                <p className="font-medium">{car.license_plate}</p>
+                <p className="font-medium">{car.licence_plate}</p>
               </div>
             )}
             {car.mileage && (
@@ -118,7 +112,7 @@ export default async function CarDetailPage({
         </div>
       </div>
 
-      <ServiceRecordList carId={car.id} serviceRecords={serviceRecords ?? []} />
+      <ServiceRecordList carId={car.id} serviceRecords={serviceRecords} />
     </div>
   );
 }

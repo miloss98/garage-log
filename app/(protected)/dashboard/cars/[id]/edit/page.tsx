@@ -1,4 +1,5 @@
-import { createClient } from "@/lib/supabase/server";
+import { serverFetch } from "@/lib/api/server";
+import type { Car } from "@/types";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -11,13 +12,7 @@ export default async function EditCarPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
-
-  const { data: car } = await supabase
-    .from("cars")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const { car } = await serverFetch<{ car: Car | null }>(`/cars/${id}`);
 
   if (!car) notFound();
 

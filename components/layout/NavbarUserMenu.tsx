@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
+import { apiFetch } from "@/lib/api/client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,11 +23,14 @@ export default function NavbarUserMenu({
   fullName?: string | null;
 }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const initials = getInitials(fullName, email);
   async function handleLogout() {
-    const supabase = createClient();
-    await supabase.auth.signOut();
+    // Even if the request fails (e.g. token already expired), still leave.
+    await apiFetch("/auth/logout", { method: "POST" }).catch(() => {});
+    // Drop cached cars so the next user on this browser can't see them.
+    queryClient.clear();
     router.push("/login");
     router.refresh();
   }

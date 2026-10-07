@@ -4,8 +4,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
-import { carSchema, type CarFormData } from "@/lib/validations/car.schema";
+import { useQueryClient } from "@tanstack/react-query";
+import { apiFetch, ApiError, uploadImage } from "@/lib/api/client";
+import {
+  carSchema,
+  toCarPayload,
+  type CarFormData,
+} from "@/lib/validations/car.schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,9 +31,11 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import ImageUpload from "../ui/ImageUpload";
+import { FUEL_LABELS } from "@/lib/constants";
 
 export default function CarForm() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -39,7 +46,7 @@ export default function CarForm() {
       name: "",
       model: "",
       color: "",
-      license_plate: "",
+      licence_plate: "",
       year: "",
       mileage: "",
     },
@@ -47,50 +54,21 @@ export default function CarForm() {
 
   async function onSubmit(data: CarFormData) {
     setLoading(true);
-    const supabase = createClient();
+    try {
+      // Upload first: the API sends the file to UploadThing and returns its URL.
+      const image_url = imageFile ? await uploadImage(imageFile) : null;
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) return;
-
-    let image_url: string | null = null;
-
-    if (imageFile) {
-      const fileExt = imageFile.name.split(".").pop();
-      const filePath = `${user.id}/${crypto.randomUUID()}.${fileExt}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from("car-images")
-        .upload(filePath, imageFile);
-
-      console.log("Upload error:", uploadError);
-      if (!uploadError) {
-        const { data: urlData } = supabase.storage
-          .from("car-images")
-          .getPublicUrl(filePath);
-        image_url = urlData.publicUrl;
-      }
-    }
-
-    const { error } = await supabase.from("cars").insert({
-      user_id: user.id,
-      image_url,
-      name: data.name,
-      model: data.model || null,
-      color: data.color || null,
-      license_plate: data.license_plate || null,
-      fuel_type: data.fuel_type || null,
-      year: data.year ? parseInt(data.year) : null,
-      mileage: data.mileage ? parseInt(data.mileage) : null,
-    });
-
-    if (error) {
-      toast.error("Failed to add car");
+      await apiFetch("/cars", {
+        method: "POST",
+        body: toCarPayload(data, image_url),
+      });
+    } catch (err) {
+      toast.error(err instanceof ApiError ? err.message : "Failed to add car");
       setLoading(false);
       return;
     }
 
+    queryClient.invalidateQueries({ queryKey: ["cars"] });
     toast.success("Car added successfully!");
     router.push("/dashboard/cars");
     router.refresh();
@@ -146,7 +124,7 @@ export default function CarForm() {
                 name="year"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Year</FormLabel>
+                    <FormLabel>Year *</FormLabel>
                     <FormControl>
                       <Input type="number" placeholder="2020" {...field} />
                     </FormControl>
@@ -169,7 +147,7 @@ export default function CarForm() {
               />
               <FormField
                 control={form.control}
-                name="license_plate"
+                name="licence_plate"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>License Plate</FormLabel>
@@ -209,10 +187,11 @@ export default function CarForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="petrol">Petrol</SelectItem>
-                        <SelectItem value="diesel">Diesel</SelectItem>
-                        <SelectItem value="electric">Electric</SelectItem>
-                        <SelectItem value="hybrid">Hybrid</SelectItem>
+                        {Object.entries(FUEL_LABELS).map(([value, label]) => (
+                          <SelectItem key={value} value={value}>
+                            {label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />

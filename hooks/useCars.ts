@@ -1,40 +1,27 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { createClient } from "@/lib/supabase/client";
-import type { Car } from "@/types";
+import { apiFetch } from "@/lib/api/client";
+import type { CarWithRecords } from "@/types";
+
+// GET /cars returns the user's cars (newest first) with their service records.
+// The API reads the user from the cookie, so no user id is passed.
+export async function fetchCars() {
+  const { cars } = await apiFetch<{ cars: CarWithRecords[] }>("/cars");
+  return cars;
+}
 
 export function useCars() {
-  const supabase = createClient();
-
   return useQuery({
     queryKey: ["cars"],
-    queryFn: async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
-
-      const { data, error } = await supabase
-        .from("cars")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      return data as Car[];
-    },
+    queryFn: fetchCars,
   });
 }
 
 export function useDeleteCar() {
-  const supabase = createClient();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (carId: string) => {
-      const { error } = await supabase.from("cars").delete().eq("id", carId);
-
-      if (error) throw error;
-    },
+    mutationFn: (carId: string) =>
+      apiFetch(`/cars/${carId}`, { method: "DELETE" }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cars"] });
     },

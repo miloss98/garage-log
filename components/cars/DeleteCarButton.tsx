@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { useDeleteCar } from "@/hooks/useCars";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,24 +19,18 @@ import { Trash2 } from "lucide-react";
 export default function DeleteCarButton({ carId }: { carId: string }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { mutate: deleteCar, isPending: loading } = useDeleteCar();
 
-  async function handleDelete() {
-    setLoading(true);
-    const supabase = createClient();
-
-    const { error } = await supabase.from("cars").delete().eq("id", carId);
-
-    if (error) {
-      toast.error("Failed to delete car");
-      setLoading(false);
-      return;
-    }
-
-    toast.success("Car deleted");
-    setOpen(false);
-    router.push("/dashboard/cars");
-    router.refresh();
+  function handleDelete() {
+    deleteCar(carId, {
+      onError: () => toast.error("Failed to delete car"),
+      onSuccess: () => {
+        toast.success("Car deleted");
+        setOpen(false);
+        router.push("/dashboard/cars");
+        router.refresh();
+      },
+    });
   }
 
   return (

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/server";
+import { getCurrentUser } from "@/lib/api/server";
 import Navbar from "@/components/layout/Navbar";
 import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
@@ -9,10 +9,7 @@ import { AppMetadata } from "@/lib/seo";
 export const metadata: Metadata = AppMetadata;
 
 export default async function LandingPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   return (
     <div className="min-h-screen bg-[#1a1a1a] text-[#f0f0f0]">
@@ -189,7 +186,7 @@ export default async function LandingPage() {
         <div className="container mx-auto px-5 h-16 flex items-center justify-center">
           <p className="text-sm text-[#707070]">
             © {new Date().getFullYear()} GarageLog. Built with Next.js &
-            Supabase.
+            Express.
           </p>
         </div>
       </footer>

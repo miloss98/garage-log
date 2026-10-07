@@ -4,8 +4,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
-import { carSchema, type CarFormData } from "@/lib/validations/car.schema";
+import { useQueryClient } from "@tanstack/react-query";
+import { apiFetch, ApiError, uploadImage } from "@/lib/api/client";
+import {
+  carSchema,
+  toCarPayload,
+  type CarFormData,
+} from "@/lib/validations/car.schema";
 import type { Car } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,9 +32,11 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import ImageUpload from "../ui/ImageUpload";
+import { FUEL_LABELS } from "@/lib/constants";
 
 export default function CarEditForm({ car }: { car: Car }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(
@@ -42,55 +49,34 @@ export default function CarEditForm({ car }: { car: Car }) {
       name: car.name,
       model: car.model ?? "",
       color: car.color ?? "",
-      license_plate: car.license_plate ?? "",
-      year: car.year ? String(car.year) : "",
+      licence_plate: car.licence_plate ?? "",
+      year: String(car.year),
       mileage: car.mileage ? String(car.mileage) : "",
-      fuel_type: (car.fuel_type as CarFormData["fuel_type"]) ?? undefined,
+      fuel_type: car.fuel_type,
     },
   });
 
   async function onSubmit(data: CarFormData) {
     setLoading(true);
-    const supabase = createClient();
+    try {
+      // Only upload when a new photo was picked; otherwise keep the old URL.
+      const image_url = imageFile
+        ? await uploadImage(imageFile)
+        : car.image_url;
 
-    let image_url: string | null = car.image_url;
-
-    if (imageFile) {
-      const fileExt = imageFile.name.split(".").pop();
-      const filePath = `${car.user_id}/${crypto.randomUUID()}.${fileExt}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from("car-images")
-        .upload(filePath, imageFile);
-
-      if (!uploadError) {
-        const { data: urlData } = supabase.storage
-          .from("car-images")
-          .getPublicUrl(filePath);
-        image_url = urlData.publicUrl;
-      }
-    }
-
-    const { error } = await supabase
-      .from("cars")
-      .update({
-        name: data.name,
-        model: data.model || null,
-        color: data.color || null,
-        license_plate: data.license_plate || null,
-        fuel_type: data.fuel_type || null,
-        year: data.year ? parseInt(data.year) : null,
-        mileage: data.mileage ? parseInt(data.mileage) : null,
-        image_url,
-      })
-      .eq("id", car.id);
-
-    if (error) {
-      toast.error("Failed to update car");
+      await apiFetch(`/cars/${car.id}`, {
+        method: "PUT",
+        body: toCarPayload(data, image_url),
+      });
+    } catch (err) {
+      toast.error(
+        err instanceof ApiError ? err.message : "Failed to update car",
+      );
       setLoading(false);
       return;
     }
 
+    queryClient.invalidateQueries({ queryKey: ["cars"] });
     toast.success("Car updated successfully!");
     router.push(`/dashboard/cars/${car.id}`);
     router.refresh();
@@ -145,7 +131,7 @@ export default function CarEditForm({ car }: { car: Car }) {
                 name="year"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Year</FormLabel>
+                    <FormLabel>Year *</FormLabel>
                     <FormControl>
                       <Input type="number" placeholder="2020" {...field} />
                     </FormControl>
@@ -168,7 +154,7 @@ export default function CarEditForm({ car }: { car: Car }) {
               />
               <FormField
                 control={form.control}
-                name="license_plate"
+                name="licence_plate"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>License Plate</FormLabel>
@@ -208,10 +194,11 @@ export default function CarEditForm({ car }: { car: Car }) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="petrol">Petrol</SelectItem>
-                        <SelectItem value="diesel">Diesel</SelectItem>
-                        <SelectItem value="electric">Electric</SelectItem>
-                        <SelectItem value="hybrid">Hybrid</SelectItem>
+                        {Object.entries(FUEL_LABELS).map(([value, label]) => (
+                          <SelectItem key={value} value={value}>
+                            {label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />

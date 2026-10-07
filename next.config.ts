@@ -1,10 +1,23 @@
-const nextConfig = {
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  // Proxy /api/* to the Express API so the browser sees it as same-origin
+  // and the httpOnly "token" cookie is stored on this app's domain.
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${process.env.API_URL}/api/:path*`,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "*.supabase.co",
-        pathname: "/storage/v1/object/public/**",
+        // UploadThing serves files from a subdomain of the app id
+        hostname: "vt4gmqxxsp.ufs.sh",
+        pathname: "/f/*",
       },
     ],
   },
