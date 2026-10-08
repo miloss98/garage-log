@@ -19,6 +19,8 @@
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
   --color-chart-5: var(--chart-5);
+  --color-chart-series: var(--chart-series);
+  --color-link: var(--link);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
   --color-chart-2: var(--chart-2);
@@ -48,77 +50,83 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/*
+ * GarageLog theme: graphite + electric blue.
+ * Every colour in the app comes from these tokens, so light/dark mode (and
+ * any future rebrand) is a change here only. Text pairs are checked for WCAG
+ * AA contrast; --chart-series is validated for colour-blind safety.
+ */
 :root {
-  --background: #1a1a1a;
-  --foreground: #f0f0f0;
-  --card: #242424;
-  --card-foreground: #f0f0f0;
-  --popover: #242424;
-  --popover-foreground: #f0f0f0;
-  --primary: #f59e0b;
-  --primary-foreground: #0a0a0a;
-  --secondary: #2e2e2e;
-  --secondary-foreground: #f0f0f0;
-  --muted: #2e2e2e;
-  --muted-foreground: #9a9a9a;
-  --accent: #2e2e2e;
-  --accent-foreground: #f0f0f0;
-  --destructive: #ef4444;
-  --border: #333333;
-  --input: #2e2e2e;
-  --ring: #f59e0b;
-  --chart-1: #fcd34d;
-  --chart-2: #fbbf24;
-  --chart-3: #f59e0b;
-  --chart-4: #d97706;
-  --chart-5: #b45309;
-  /* Expense charts: validated for contrast/colour-blindness on the dark card */
-  --chart-series: #3987e5;
+  --background: #f7f8fa;
+  --foreground: #0b0d12;
+  --card: #ffffff;
+  --card-foreground: #0b0d12;
+  --popover: #ffffff;
+  --popover-foreground: #0b0d12;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #eef1f5;
+  --secondary-foreground: #0b0d12;
+  --muted: #f1f3f6;
+  --muted-foreground: #5b6472;
+  --accent: #eef1f5;
+  --accent-foreground: #0b0d12;
+  --destructive: #dc2626;
+  --border: #e3e7ed;
+  --input: #dfe4eb;
+  --ring: #3b82f6;
+  --link: #2563eb;
+  --chart-1: #2a78d6;
+  --chart-2: #eb6834;
+  --chart-3: #1baf7a;
+  --chart-4: #eda100;
+  --chart-5: #e87ba4;
+  --chart-series: #2a78d6;
   --radius: 0.625rem;
-  --sidebar: #1a1a1a;
-  --sidebar-foreground: #f0f0f0;
-  --sidebar-primary: #f59e0b;
-  --sidebar-primary-foreground: #0a0a0a;
-  --sidebar-accent: #2e2e2e;
-  --sidebar-accent-foreground: #f0f0f0;
-  --sidebar-border: #333333;
-  --sidebar-ring: #f59e0b;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0b0d12;
+  --sidebar-primary: #2563eb;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eef1f5;
+  --sidebar-accent-foreground: #0b0d12;
+  --sidebar-border: #e3e7ed;
+  --sidebar-ring: #3b82f6;
 }
 
 .dark {
-  --background: #1a1a1a;
-  --foreground: #f0f0f0;
-  --card: #242424;
-  --card-foreground: #f0f0f0;
-  --popover: #242424;
-  --popover-foreground: #f0f0f0;
-  --primary: #f59e0b;
-  --primary-foreground: #0a0a0a;
-  --secondary: #2e2e2e;
-  --secondary-foreground: #f0f0f0;
-  --muted: #2e2e2e;
-  --muted-foreground: #9a9a9a;
-  --accent: #2e2e2e;
-  --accent-foreground: #f0f0f0;
+  --background: #0b0d12;
+  --foreground: #e8ebf0;
+  --card: #12151b;
+  --card-foreground: #e8ebf0;
+  --popover: #151921;
+  --popover-foreground: #e8ebf0;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #1c2028;
+  --secondary-foreground: #e8ebf0;
+  --muted: #1a1e25;
+  --muted-foreground: #9aa3b2;
+  --accent: #1f242d;
+  --accent-foreground: #e8ebf0;
   --destructive: #ef4444;
-  --border: #333333;
-  --input: #2e2e2e;
-  --ring: #f59e0b;
-  --chart-1: #fcd34d;
-  --chart-2: #fbbf24;
-  --chart-3: #f59e0b;
-  --chart-4: #d97706;
-  --chart-5: #b45309;
-  /* Expense charts: validated for contrast/colour-blindness on the dark card */
+  --border: #262b34;
+  --input: #2a303a;
+  --ring: #3b82f6;
+  --link: #60a5fa;
+  --chart-1: #3987e5;
+  --chart-2: #d95926;
+  --chart-3: #199e70;
+  --chart-4: #c98500;
+  --chart-5: #d55181;
   --chart-series: #3987e5;
-  --sidebar: #1a1a1a;
-  --sidebar-foreground: #f0f0f0;
-  --sidebar-primary: #f59e0b;
-  --sidebar-primary-foreground: #0a0a0a;
-  --sidebar-accent: #2e2e2e;
-  --sidebar-accent-foreground: #f0f0f0;
-  --sidebar-border: #333333;
-  --sidebar-ring: #f59e0b;
+  --sidebar: #0f1217;
+  --sidebar-foreground: #e8ebf0;
+  --sidebar-primary: #2563eb;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1c2028;
+  --sidebar-accent-foreground: #e8ebf0;
+  --sidebar-border: #262b34;
+  --sidebar-ring: #3b82f6;
 }
 
 @layer base {
@@ -190,9 +198,10 @@ h6 {
 }
 
 .card-hover {
-  @apply transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/5 hover:border-amber-500/30;
+  @apply transition-all duration-200 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/30;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
+/* Native date picker icon is black: invert it on dark backgrounds only */
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }

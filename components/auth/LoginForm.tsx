@@ -52,10 +52,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <div className="relative z-10 p-6">
-        <Logo href="/" dark />
+        <Logo href="/" />
       </div>
 
       {/* Form */}
@@ -63,17 +63,17 @@ export default function LoginPage() {
         <div className="w-full max-w-sm">
           <div className="text-center mb-8">
             <h1
-              className="text-3xl font-bold text-[#f0f0f0] mb-2"
+              className="text-3xl font-bold text-foreground mb-2"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Welcome back
             </h1>
-            <p className="text-[#9a9a9a] text-sm">
+            <p className="text-muted-foreground text-sm">
               Sign in to your Garage Log account
             </p>
           </div>
 
-          <div className="bg-[#242424] border  rounded-2xl p-6">
+          <div className="bg-card border  rounded-2xl p-6">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -84,12 +84,12 @@ export default function LoginPage() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[#c0c0c0]">Email</FormLabel>
+                      <FormLabel className="text-foreground">Email</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
                           placeholder="john@example.com"
-                          className="bg-[#2e2e2e] border-[#3d3d3d] text-[#f0f0f0] placeholder:text-[#707070] focus:border-amber-500"
+                          className="bg-background border-input text-foreground placeholder:text-muted-foreground focus:border-primary"
                           {...field}
                         />
                       </FormControl>
@@ -102,12 +102,12 @@ export default function LoginPage() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[#c0c0c0]">Password</FormLabel>
+                      <FormLabel className="text-foreground">Password</FormLabel>
                       <FormControl>
                         <Input
                           type="password"
                           placeholder="••••••••"
-                          className="bg-[#2e2e2e] border-[#3d3d3d] text-[#f0f0f0] placeholder:text-[#707070] focus:border-amber-500"
+                          className="bg-background border-input text-foreground placeholder:text-muted-foreground focus:border-primary"
                           {...field}
                         />
                       </FormControl>
@@ -139,18 +139,18 @@ export default function LoginPage() {
             </Form>
           </div>
 
-          <div className="flex items-center gap-3 my-6 text-xs text-[#707070]">
-            <span className="h-px flex-1 bg-[#333333]" />
+          <div className="flex items-center gap-3 my-6 text-xs text-muted-foreground">
+            <span className="h-px flex-1 bg-border" />
             or just look around
-            <span className="h-px flex-1 bg-[#333333]" />
+            <span className="h-px flex-1 bg-border" />
           </div>
-          <TryDemoButton className="w-full h-10 border-[#3d3d3d] bg-transparent text-[#c0c0c0] hover:bg-[#333333] hover:text-[#f0f0f0]" />
+          <TryDemoButton className="w-full h-10 border-input bg-transparent text-foreground hover:bg-accent hover:text-foreground" />
 
-          <p className="text-center text-sm text-[#707070] mt-6">
+          <p className="text-center text-sm text-muted-foreground mt-6">
             Don&apos;t have an account?{" "}
             <Link
               href="/register"
-              className="text-amber-400 hover:text-amber-300 transition-colors"
+              className="text-link hover:underline transition-colors"
             >
               Create one
             </Link>

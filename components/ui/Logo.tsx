@@ -2,13 +2,12 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Car } from "lucide-react";
 
+// Colours come from theme tokens, so the logo adapts to light/dark mode
 export default function Logo({
   href = "/",
-  dark = false,
   className,
 }: {
   href?: string;
-  dark?: boolean;
   className?: string;
 }) {
   return (
@@ -17,33 +16,15 @@ export default function Logo({
       aria-label="GarageLog home"
       className={cn("flex items-center gap-2.5 group", className)}
     >
-      {/* Icon */}
-      <div
-        className={cn(
-          "w-8 h-8 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-105",
-          dark ? "bg-amber-500" : "bg-amber-500",
-        )}
-      >
-        <div
-          className={cn(
-            "w-8 h-8 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-105",
-            "bg-amber-500",
-          )}
-        >
-          <Car size={18} color="white" strokeWidth={2} />
-        </div>
+      <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+        <Car size={18} className="text-primary-foreground" strokeWidth={2} />
       </div>
 
-      {/* Wordmark */}
       <span
-        className={cn(
-          "font-bold text-xl tracking-tight",
-          dark ? "text-[#f0f0f0]" : "text-slate-900",
-        )}
+        className="font-bold text-xl tracking-tight text-foreground"
         style={{ fontFamily: "var(--font-display)" }}
       >
-        Garage
-        <span className={dark ? "text-amber-400" : "text-amber-500"}>Log</span>
+        Garage<span className="text-link">Log</span>
       </span>
     </Link>
   );

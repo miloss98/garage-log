@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import QueryProvider from "@/components/providers/QueryProvider";
+import ThemeProvider from "@/components/providers/ThemeProvider";
 import { LayoutMetadata } from "@/lib/seo";
 
 const sora = Sora({
@@ -25,12 +26,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${sora.variable} ${dmSans.variable}`}>
+    // suppressHydrationWarning: next-themes sets the "dark" class on <html>
+    // before React loads, so server and browser markup differ there on purpose
+    <html
+      lang="en"
+      className={`${sora.variable} ${dmSans.variable}`}
+      suppressHydrationWarning
+    >
       <body suppressHydrationWarning>
-        <QueryProvider>
-          {children}
-          <Toaster />
-        </QueryProvider>
+        <ThemeProvider>
+          <QueryProvider>
+            {children}
+            <Toaster />
+          </QueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

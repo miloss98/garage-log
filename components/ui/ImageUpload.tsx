@@ -36,7 +36,7 @@ export default function ImageUpload({
           "relative w-full rounded-xl border-2 border-dashed transition-all duration-200 cursor-pointer group",
           preview
             ? "border-transparent"
-            : "border-border hover:border-amber-400",
+            : "border-border hover:border-primary",
         )}
       >
         {preview ? (
@@ -75,10 +75,10 @@ export default function ImageUpload({
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-10 px-5 text-center">
-            <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3 group-hover:bg-amber-100 transition-colors">
+            <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3 group-hover:bg-primary/10 transition-colors">
               <ImagePlus
                 size={22}
-                className="text-muted-foreground group-hover:text-amber-500 transition-colors"
+                className="text-muted-foreground group-hover:text-primary transition-colors"
               />
             </div>
             <p className="text-sm font-medium text-foreground">

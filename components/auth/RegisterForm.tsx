@@ -54,10 +54,10 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a]  flex flex-col">
+    <div className="min-h-screen bg-background  flex flex-col">
       {/* Header */}
       <div className="relative z-10 p-6">
-        <Logo href="/" dark />
+        <Logo href="/" />
       </div>
 
       {/* Form */}
@@ -65,17 +65,17 @@ export default function RegisterPage() {
         <div className="w-full max-w-sm">
           <div className="text-center mb-8">
             <h1
-              className="text-3xl font-bold text-[#f0f0f0] mb-2"
+              className="text-3xl font-bold text-foreground mb-2"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Create an account
             </h1>
-            <p className="text-[#9a9a9a] text-sm">
+            <p className="text-muted-foreground text-sm">
               Start tracking your car maintenance today
             </p>
           </div>
 
-          <div className="bg-[#242424] border border-[#333333] rounded-2xl p-6">
+          <div className="bg-card border border-border rounded-2xl p-6">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -86,13 +86,13 @@ export default function RegisterPage() {
                   name="full_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[#c0c0c0]">
+                      <FormLabel className="text-foreground">
                         Full Name
                       </FormLabel>
                       <FormControl>
                         <Input
                           placeholder="John Doe"
-                          className="bg-[#2e2e2e] border-[#3d3d3d] text-[#f0f0f0] placeholder:text-[#707070] focus:border-amber-500"
+                          className="bg-background border-input text-foreground placeholder:text-muted-foreground focus:border-primary"
                           {...field}
                         />
                       </FormControl>
@@ -105,12 +105,12 @@ export default function RegisterPage() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[#c0c0c0]">Email</FormLabel>
+                      <FormLabel className="text-foreground">Email</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
                           placeholder="john@example.com"
-                          className="bg-[#2e2e2e] border-[#3d3d3d] text-[#f0f0f0] placeholder:text-[#707070] focus:border-amber-500"
+                          className="bg-background border-input text-foreground placeholder:text-muted-foreground focus:border-primary"
                           {...field}
                         />
                       </FormControl>
@@ -123,12 +123,12 @@ export default function RegisterPage() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[#c0c0c0]">Password</FormLabel>
+                      <FormLabel className="text-foreground">Password</FormLabel>
                       <FormControl>
                         <Input
                           type="password"
                           placeholder="••••••••"
-                          className="bg-[#2e2e2e] border-[#3d3d3d] text-[#f0f0f0] placeholder:text-[#707070] focus:border-amber-500"
+                          className="bg-background border-input text-foreground placeholder:text-muted-foreground focus:border-primary"
                           {...field}
                         />
                       </FormControl>
@@ -160,11 +160,11 @@ export default function RegisterPage() {
             </Form>
           </div>
 
-          <p className="text-center text-sm text-[#707070] mt-6">
+          <p className="text-center text-sm text-muted-foreground mt-6">
             Already have an account?{" "}
             <Link
               href="/login"
-              className="text-amber-400 hover:text-amber-300 transition-colors"
+              className="text-link hover:underline transition-colors"
             >
               Sign in
             </Link>

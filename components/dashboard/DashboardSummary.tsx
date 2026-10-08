@@ -61,7 +61,7 @@ export default function DashboardSummary({ userName }: { userName: string }) {
       <div>
         <h1 className="text-2xl md:text-3xl font-bold mb-1">
           Welcome back, <br className="md:hidden" />
-          <span className="text-amber-500">
+          <span className="text-link">
             {userName ? `${userName}` : ""}
           </span>{" "}
           👋
@@ -73,7 +73,7 @@ export default function DashboardSummary({ userName }: { userName: string }) {
 
       {/* Stat cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="border-l border-l-blue-500 shadow-[0_8px_12px_rgba(59,130,246,0.15)]">
+        <Card className="border-l border-l-blue-500">
           <CardContent className="py-0 md:py-6">
             <div className="flex items-center justify-between">
               <div>
@@ -82,14 +82,14 @@ export default function DashboardSummary({ userName }: { userName: string }) {
                 </p>
                 <p className="text-4xl font-bold">{totalCars}</p>
               </div>
-              <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center">
                 <Car size={22} className="text-blue-500" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-l border-l-red-500 shadow-[0_8px_12px_rgba(239,68,68,0.15)]">
+        <Card className="border-l border-l-red-500">
           <CardContent className="py-0 md:py-6">
             <div className="flex items-center justify-between">
               <div>
@@ -98,21 +98,21 @@ export default function DashboardSummary({ userName }: { userName: string }) {
                 </p>
                 <p className="text-4xl font-bold">{overdueCount}</p>
               </div>
-              <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center">
                 <AlertCircle size={22} className="text-red-500" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-l border-l-amber-500 shadow-[0_8px_12px_rgba(245,158,11,0.15)]">
+        <Card className="border-l border-l-amber-500">
           <CardContent className="py-0 md:py-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-white mb-1">Due Soon</p>
+                <p className="text-sm text-muted-foreground mb-1">Due Soon</p>
                 <p className="text-4xl font-bold">{dueSoonCount}</p>
               </div>
-              <div className="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center">
                 <Clock size={22} className="text-amber-500" />
               </div>
             </div>
@@ -139,7 +139,7 @@ export default function DashboardSummary({ userName }: { userName: string }) {
                   <div className="flex items-center gap-4">
                     <div
                       className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
-                        isOverdue ? "bg-red-50" : "bg-amber-50"
+                        isOverdue ? "bg-red-500/10" : "bg-amber-500/10"
                       }`}
                     >
                       <AlertCircle
@@ -182,7 +182,7 @@ export default function DashboardSummary({ userName }: { userName: string }) {
       ) : totalCars > 0 ? (
         <Card className="shadow-sm">
           <CardContent className="py-14 text-center">
-            <div className="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4">
+            <div className="w-14 h-14 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-4">
               <CheckCircle2 size={28} className="text-green-500" />
             </div>
             <p className="font-semibold text-lg">

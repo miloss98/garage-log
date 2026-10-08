@@ -13,25 +13,25 @@ export default async function LandingPage() {
   const user = await getCurrentUser();
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] text-[#f0f0f0]">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar email={user?.email ?? null} />
 
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="relative container mx-auto px-5 py-20 md:py-24 lg:py-32 text-center">
           <div className="max-w-4xl mx-auto">
-            <div className="animate-fade-up inline-flex items-center gap-2 bg-amber-400/10 border border-amber-500/20 text-amber-400 text-sm px-5 py-1.5 rounded-full mb-8">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+            <div className="animate-fade-up inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-link text-sm px-5 py-1.5 rounded-full mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               Free · No credit card required
             </div>
 
-            <h1 className="animate-fade-up animation-delay-100 text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 bg-linear-to-b from-slate-100 to-slate-400 bg-clip-text text-transparent leading-tight">
+            <h1 className="animate-fade-up animation-delay-100 text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 bg-linear-to-b from-foreground to-foreground/60 bg-clip-text text-transparent leading-tight">
               Never miss a car
               <br />
               service again
             </h1>
 
-            <p className="animate-fade-up animation-delay-200 text-xl text-[#9a9a9a] mb-10 leading-relaxed max-w-2xl mx-auto">
+            <p className="animate-fade-up animation-delay-200 text-xl text-muted-foreground mb-10 leading-relaxed max-w-2xl mx-auto">
               Garage Log helps you track oil changes, services, tire changes and
               registration deadlines for all your vehicles — in one place.
             </p>
@@ -56,7 +56,7 @@ export default async function LandingPage() {
                       Start for free <ArrowRight size={16} />
                     </Link>
                   </Button>
-                  <TryDemoButton className="h-12 px-8 text-base border-[#3d3d3d] bg-transparent text-[#c0c0c0] hover:bg-[#333333] hover:text-[#f0f0f0]" />
+                  <TryDemoButton className="h-12 px-8 text-base border-input bg-transparent text-foreground hover:bg-accent hover:text-foreground" />
                 </>
               )}
             </div>
@@ -67,10 +67,10 @@ export default async function LandingPage() {
       {/* Features */}
       <section className="container mx-auto px-5 py-10 md:py-16 lg:py-24">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-[#f0f0f0] mb-4">
+          <h2 className="text-3xl font-bold text-foreground mb-4">
             Everything you need to stay on top of maintenance
           </h2>
-          <p className="text-[#9a9a9a] max-w-xl mx-auto">
+          <p className="text-muted-foreground max-w-xl mx-auto">
             Simple, focused tools that keep your vehicles running smoothly.
           </p>
         </div>
@@ -97,13 +97,13 @@ export default async function LandingPage() {
           ].map((f) => (
             <div
               key={f.title}
-              className={`animate-fade-up ${f.delay} group p-6 rounded-2xl border border-[#333333] bg-[#242424]/50 hover:bg-[#242424] hover:border-[#3d3d3d] transition-all duration-300 hover:-translate-y-1`}
+              className={`animate-fade-up ${f.delay} group p-6 rounded-2xl border border-border bg-card/50 hover:bg-card hover:border-input transition-all duration-300 hover:-translate-y-1`}
             >
               <div className="text-4xl mb-4">{f.icon}</div>
-              <h3 className="font-semibold text-lg text-[#f0f0f0] mb-2">
+              <h3 className="font-semibold text-lg text-foreground mb-2">
                 {f.title}
               </h3>
-              <p className="text-[#9a9a9a] text-sm leading-relaxed">{f.desc}</p>
+              <p className="text-muted-foreground text-sm leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
@@ -111,11 +111,11 @@ export default async function LandingPage() {
 
       {/* Status section */}
       <section className="container mx-auto px-5 py-16">
-        <div className="max-w-3xl mx-auto rounded-2xl border border-[#333333] bg-[#242424]/50 p-12 text-center">
-          <h2 className="text-3xl font-bold text-[#f0f0f0] mb-4">
+        <div className="max-w-3xl mx-auto rounded-2xl border border-border bg-card/50 p-12 text-center">
+          <h2 className="text-3xl font-bold text-foreground mb-4">
             Always know what needs attention
           </h2>
-          <p className="text-white mb-10">
+          <p className="text-muted-foreground mb-10">
             Color-coded status indicators show you at a glance what&apos;s
             overdue, due soon, or all good.
           </p>
@@ -147,10 +147,10 @@ export default async function LandingPage() {
       {/* CTA */}
       <section className="container mx-auto px-5 py-12 md:py-20 lg:py-24 text-center">
         <div className="max-w-xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#f0f0f0] mb-4">
+          <h2 className="text-3xl font-bold text-foreground mb-4">
             Ready to get started?
           </h2>
-          <p className="text-[#9a9a9a] mb-8">
+          <p className="text-muted-foreground mb-8">
             Create a free account and add your first car in minutes.
           </p>
           {user ? (
@@ -176,9 +176,9 @@ export default async function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#333333]">
+      <footer className="border-t border-border">
         <div className="container mx-auto px-5 h-16 flex items-center justify-center">
-          <p className="text-sm text-[#707070]">
+          <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} GarageLog. Built with Next.js &
             Express.
           </p>
