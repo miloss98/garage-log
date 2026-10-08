@@ -60,6 +60,16 @@ export type ServiceRecord = {
   updated_at: string;
 };
 
+// GET /api/stats - amounts are plain numbers (already rounded to cents)
+export type Stats = {
+  total: number;
+  record_count: number;
+  period_total: number;
+  by_month: { month: string; total: number; count: number }[];
+  by_type: { type: ServiceType; total: number; count: number }[];
+  by_car: { car_id: string; name: string; total: number }[];
+};
+
 export type CarWithRecords = Car & {
   service_records: ServiceRecord[];
 };

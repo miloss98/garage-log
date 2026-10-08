@@ -44,10 +44,17 @@ export function addMonthsToDateInput(date: string, months: number): string {
 }
 
 // Intl knows each currency's symbol and decimals: 1234.5 EUR -> "€1,234.50"
-export function formatCurrency(amount: number | string, currency: Currency) {
-  return new Intl.NumberFormat("en-GB", { style: "currency", currency }).format(
-    Number(amount),
-  );
+// compact: 1234 -> "€1.2K" (for chart axes, where space is tight)
+export function formatCurrency(
+  amount: number | string,
+  currency: Currency,
+  { compact = false } = {},
+) {
+  return new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency,
+    ...(compact && { notation: "compact", maximumFractionDigits: 1 }),
+  }).format(Number(amount));
 }
 
 // "2025-03-14T00:00:00.000Z" -> "2025-03-14", the format <input type="date"> expects.

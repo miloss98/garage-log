@@ -72,6 +72,8 @@
   --chart-3: #f59e0b;
   --chart-4: #d97706;
   --chart-5: #b45309;
+  /* Expense charts: validated for contrast/colour-blindness on the dark card */
+  --chart-series: #3987e5;
   --radius: 0.625rem;
   --sidebar: #1a1a1a;
   --sidebar-foreground: #f0f0f0;
@@ -107,6 +109,8 @@
   --chart-3: #f59e0b;
   --chart-4: #d97706;
   --chart-5: #b45309;
+  /* Expense charts: validated for contrast/colour-blindness on the dark card */
+  --chart-series: #3987e5;
   --sidebar: #1a1a1a;
   --sidebar-foreground: #f0f0f0;
   --sidebar-primary: #f59e0b;
