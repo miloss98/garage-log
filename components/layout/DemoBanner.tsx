@@ -8,7 +8,7 @@ export default function DemoBanner() {
   const logout = useLogout();
 
   return (
-    <div className="border-b border-primary/20 bg-primary/10">
+    <div data-demo-banner className="border-b border-primary/20 bg-primary/10">
       <div className="flex flex-col gap-2 px-5 py-2.5 text-sm sm:flex-row sm:items-center sm:justify-between lg:px-8">
         <p className="flex items-center gap-2 text-foreground">
           <FlaskConical size={16} className="shrink-0" />

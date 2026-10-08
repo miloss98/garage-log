@@ -32,7 +32,6 @@ GarageLog is a full-stack car maintenance tracker built with Next.js 16 and a cu
 | Auth             | JWT in httpOnly cookie   |
 | Storage          | UploadThing              |
 | Data fetching    | TanStack Query v5        |
-| State management | Zustand                  |
 | Forms            | React Hook Form + Zod    |
 | Deployment       | Vercel (web), Render (API) |
 
