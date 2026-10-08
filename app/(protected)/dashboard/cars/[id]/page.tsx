@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Pencil } from "lucide-react";
 import ServiceRecordList from "@/components/cars/ServiceRecordList";
+import UpcomingServices from "@/components/cars/UpcomingServices";
 import DeleteCarButton from "@/components/cars/DeleteCarButton";
 import { formatMileage } from "@/lib/utils";
 import Image from "next/image";
@@ -112,6 +113,11 @@ export default async function CarDetailPage({
           </div>
         </div>
       </div>
+
+      <UpcomingServices
+        carMileage={car.mileage}
+        serviceRecords={serviceRecords}
+      />
 
       <ServiceRecordList
         carId={car.id}

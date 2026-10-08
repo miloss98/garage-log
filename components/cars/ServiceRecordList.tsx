@@ -7,7 +7,6 @@ import { apiFetch } from "@/lib/api/client";
 import type { Currency, ServiceRecord } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -22,34 +21,6 @@ import { toast } from "sonner";
 import { Pencil, Trash2, X, Wrench, Plus } from "lucide-react";
 import { SERVICE_LABELS, SERVICE_ICONS } from "@/lib/constants";
 import { formatCurrency, formatDate, formatMileage } from "@/lib/utils";
-
-function getStatusBadge(nextServiceDate: string | null) {
-  if (!nextServiceDate) return null;
-
-  const today = new Date();
-  const next = new Date(nextServiceDate);
-  const daysUntil = Math.ceil(
-    (next.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
-  );
-
-  if (daysUntil < 0)
-    return (
-      <Badge variant="destructive" className="pointer-events-none text-white">
-        Overdue
-      </Badge>
-    );
-  if (daysUntil <= 30)
-    return (
-      <Badge className="bg-orange-500 text-white hover:bg-orange-600 pointer-events-none">
-        Due soon
-      </Badge>
-    );
-  return (
-    <Badge className="bg-green-600 text-white hover:bg-green-700 pointer-events-none">
-      OK
-    </Badge>
-  );
-}
 
 function DeleteRecordButton({
   carId,
@@ -192,7 +163,6 @@ export default function ServiceRecordList({
                       </span>
                     </CardTitle>
                     <div className="flex items-center gap-2">
-                      {getStatusBadge(record.next_service_date)}
                       <Button
                         variant="outline"
                         size="icon"

@@ -2,7 +2,7 @@
 
 import { useDashboard } from "@/hooks/useDashboard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import ServiceStatusBadge from "@/components/cars/ServiceStatusBadge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,17 +14,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { SERVICE_LABELS } from "@/lib/constants";
-
-function getServiceStatus(nextDate: string | null) {
-  if (!nextDate) return null;
-  const days = Math.ceil(
-    (new Date(nextDate).getTime() - new Date().getTime()) /
-      (1000 * 60 * 60 * 24),
-  );
-  if (days < 0) return { label: "Overdue", days };
-  if (days <= 30) return { label: "Due soon", days };
-  return { label: "OK", days };
-}
+import { describeDue, getUpcomingServices } from "@/lib/service-status";
 
 export default function DashboardSummary({ userName }: { userName: string }) {
   const { data: cars, isLoading } = useDashboard();
@@ -47,22 +37,23 @@ export default function DashboardSummary({ userName }: { userName: string }) {
   }
 
   const totalCars = cars?.length ?? 0;
-  const allRecords =
-    cars?.flatMap((car) => car.service_records.map((r) => ({ ...r, car }))) ??
-    [];
 
-  const alerts = allRecords
-    .filter((r) => r.next_service_date)
-    .map((r) => ({ ...r, status: getServiceStatus(r.next_service_date) }))
-    .filter((r) => r.status && r.status.label !== "OK")
-    .sort((a, b) => (a.status?.days ?? 0) - (b.status?.days ?? 0));
+  // Only the latest record of each kind per car counts (see service-status.ts)
+  const alerts = (cars ?? [])
+    .flatMap((car) =>
+      getUpcomingServices(car.mileage, car.service_records).map(
+        (service) => ({ ...service, car }),
+      ),
+    )
+    .filter((service) => service.status !== "ok")
+    .sort(
+      (a, b) =>
+        Number(b.status === "overdue") - Number(a.status === "overdue") ||
+        (a.daysLeft ?? Infinity) - (b.daysLeft ?? Infinity),
+    );
 
-  const overdueCount = alerts.filter(
-    (a) => a.status?.label === "Overdue",
-  ).length;
-  const dueSoonCount = alerts.filter(
-    (a) => a.status?.label === "Due soon",
-  ).length;
+  const overdueCount = alerts.filter((a) => a.status === "overdue").length;
+  const dueSoonCount = alerts.filter((a) => a.status === "due_soon").length;
 
   return (
     <div className="space-y-8">
@@ -138,11 +129,11 @@ export default function DashboardSummary({ userName }: { userName: string }) {
             </CardTitle>
           </CardHeader>
           <CardContent className="divide-y">
-            {alerts.map((alert, i) => {
-              const isOverdue = alert.status?.label === "Overdue";
+            {alerts.map((alert) => {
+              const isOverdue = alert.status === "overdue";
               return (
                 <div
-                  key={i}
+                  key={`${alert.car.id}-${alert.lastRecord.id}`}
                   className="flex items-center justify-between py-4 first:pt-2"
                 >
                   <div className="flex items-center gap-4">
@@ -161,30 +152,13 @@ export default function DashboardSummary({ userName }: { userName: string }) {
                     <div>
                       <p className="font-semibold text-sm">{alert.car.name}</p>
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        {SERVICE_LABELS[alert.type] ?? alert.type}
+                        {alert.title ?? SERVICE_LABELS[alert.type]} ·{" "}
+                        {describeDue(alert)}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-xs text-muted-foreground hidden sm:block">
-                      {isOverdue
-                        ? `${Math.abs(alert.status?.days ?? 0)} days overdue`
-                        : alert.status?.days === 0
-                          ? "Due today"
-                          : `in ${alert.status?.days} days`}
-                    </span>
-                    {isOverdue ? (
-                      <Badge
-                        variant="destructive"
-                        className="pointer-events-none"
-                      >
-                        Overdue
-                      </Badge>
-                    ) : (
-                      <Badge className="bg-amber-500 text-white pointer-events-none">
-                        Due soon
-                      </Badge>
-                    )}
+                    <ServiceStatusBadge status={alert.status} />
                     <Button
                       variant="outline"
                       size="sm"

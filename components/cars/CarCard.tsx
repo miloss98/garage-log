@@ -1,6 +1,8 @@
 "use client";
 
-import type { Car } from "@/types";
+import type { CarWithRecords } from "@/types";
+import { getUpcomingServices } from "@/lib/service-status";
+import ServiceStatusBadge from "./ServiceStatusBadge";
 import Link from "next/link";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,9 +12,19 @@ import { formatMileage } from "@/lib/utils";
 import Image from "next/image";
 import { FUEL_LABELS } from "@/lib/constants";
 
-export default function CarCard({ car }: { car: Car }) {
+export default function CarCard({ car }: { car: CarWithRecords }) {
+  // Most urgent item comes first; only flag the card when action is needed
+  const mostUrgent = getUpcomingServices(car.mileage, car.service_records)[0];
+  const needsAttention = mostUrgent && mostUrgent.status !== "ok";
+
   return (
-    <Card className="card-hover overflow-hidden p-0">
+    <Card className="card-hover overflow-hidden p-0 relative">
+      {needsAttention && (
+        <ServiceStatusBadge
+          status={mostUrgent.status}
+          className="absolute top-3 left-3 z-10 shadow"
+        />
+      )}
       {car.image_url ? (
         <div className="relative w-full h-44 overflow-hidden">
           <Image
