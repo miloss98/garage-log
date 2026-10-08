@@ -6,7 +6,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/api/client";
 import type { Currency, ServiceRecord } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -16,9 +15,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import SheetDialogContent from "@/components/ui/SheetDialogContent";
 import ServiceRecordForm from "./ServiceRecordForm";
 import { toast } from "sonner";
-import { Pencil, Trash2, X, Wrench, Plus } from "lucide-react";
+import {
+  Building2,
+  CalendarClock,
+  Gauge,
+  Pencil,
+  Plus,
+  Trash2,
+  Wallet,
+  Wrench,
+} from "lucide-react";
 import { SERVICE_LABELS, SERVICE_ICONS } from "@/lib/constants";
 import { formatCurrency, formatDate, formatMileage } from "@/lib/utils";
 
@@ -57,10 +66,10 @@ function DeleteRecordButton({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          variant="outline"
+          variant="ghost"
           size="icon"
           aria-label="Delete service record"
-          className="text-destructive  hover:text-destructive hover:bg-destructive/10 cursor-pointer"
+          className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
         >
           <Trash2 size={15} />
         </Button>
@@ -91,6 +100,25 @@ function DeleteRecordButton({
   );
 }
 
+// Small "icon + value" fact under a timeline entry
+function Fact({
+  icon: Icon,
+  children,
+}: {
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  children: React.ReactNode;
+}) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <Icon size={14} className="text-muted-foreground" />
+      {children}
+    </span>
+  );
+}
+
+type FormState =
+  { mode: "add" } | { mode: "edit"; record: ServiceRecord } | null;
+
 export default function ServiceRecordList({
   carId,
   serviceRecords,
@@ -102,156 +130,135 @@ export default function ServiceRecordList({
   currency: Currency;
   currentMileage: number | null;
 }) {
-  const formProps = { carId, currency, currentMileage };
-  const [showForm, setShowForm] = useState(false);
-  const [editingRecord, setEditingRecord] = useState<ServiceRecord | null>(
-    null,
-  );
+  // One dialog for both adding and editing (a bottom sheet on phones)
+  const [formState, setFormState] = useState<FormState>(null);
 
   return (
-    <div className="py-6 md:py-12">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl md:text-2xl font-bold">Service Records</h2>
-        <Button
-          className="flex items-center gap-2"
-          onClick={() => {
-            setShowForm(!showForm);
-            setEditingRecord(null);
-          }}
-        >
-          {showForm ? (
-            "Cancel"
-          ) : (
-            <>
-              <Plus size={16} /> Add Record
-            </>
-          )}
+    <section>
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-semibold">Service history</h2>
+        <Button className="gap-2" onClick={() => setFormState({ mode: "add" })}>
+          <Plus size={16} /> Add record
         </Button>
       </div>
 
-      {showForm && (
-        <div className="mb-6">
-          <ServiceRecordForm
-            {...formProps}
-            onSuccess={() => setShowForm(false)}
-          />
-        </div>
-      )}
-
-      {serviceRecords.length === 0 && !showForm ? (
-        <div className="text-center py-12 text-muted-foreground">
-          <Wrench size={40} className="text-muted-foreground mx-auto mb-3" />
+      {serviceRecords.length === 0 ? (
+        <div className="rounded-xl border border-dashed py-12 text-center text-muted-foreground">
+          <Wrench size={36} className="mx-auto mb-3" />
           <p>No service records yet. Add your first one!</p>
         </div>
       ) : (
-        <div className="space-y-3">
-          {serviceRecords.map((record) => (
-            <div key={record.id}>
-              <Card>
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-base flex items-center gap-2">
-                      {SERVICE_ICONS[record.type]}
-                      <span>
-                        {SERVICE_LABELS[record.type] ?? record.type}
+        // Timeline: a vertical line with the service icon as each entry's marker
+        <ol className="relative ml-4 border-l border-border">
+          {serviceRecords.map((record) => {
+            const nextDue = [
+              record.next_service_date && formatDate(record.next_service_date),
+              record.next_service_mileage != null &&
+                formatMileage(record.next_service_mileage),
+            ]
+              .filter(Boolean)
+              .join(" or ");
+
+            return (
+              <li key={record.id} className="relative pb-6 pl-8 last:pb-0">
+                <span className="absolute -left-4 top-0 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card">
+                  {SERVICE_ICONS[record.type]}
+                </span>
+
+                <div className="rounded-xl border border-border bg-card p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-xs text-muted-foreground">
+                        {formatDate(record.service_date)}
+                      </p>
+                      <h3 className="font-semibold leading-snug">
+                        {SERVICE_LABELS[record.type]}
                         {record.title && (
                           <span className="font-normal text-muted-foreground">
                             {" "}
                             · {record.title}
                           </span>
                         )}
-                      </span>
-                    </CardTitle>
-                    <div className="flex items-center gap-2">
+                      </h3>
+                    </div>
+                    <div className="-mr-2 -mt-1 flex shrink-0 items-center">
                       <Button
-                        variant="outline"
+                        variant="ghost"
                         size="icon"
-                        className="cursor-pointer "
                         aria-label="Edit service record"
-                        onClick={() => {
-                          setEditingRecord(
-                            editingRecord?.id === record.id ? null : record,
-                          );
-                          setShowForm(false);
-                        }}
+                        className="h-8 w-8 text-muted-foreground"
+                        onClick={() => setFormState({ mode: "edit", record })}
                       >
-                        {editingRecord?.id === record.id ? (
-                          <X size={15} />
-                        ) : (
-                          <Pencil size={15} />
-                        )}
+                        <Pencil size={15} />
                       </Button>
-                      <DeleteRecordButton
-                        carId={carId}
-                        recordId={record.id}
-                      />
+                      <DeleteRecordButton carId={carId} recordId={record.id} />
                     </div>
                   </div>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground space-y-1">
-                  <p>
-                    Service date:{" "}
-                    <span className="text-foreground font-medium">
-                      {formatDate(record.service_date)}
-                    </span>
-                  </p>
-                  {record.mileage_at_service != null && (
-                    <p>
-                      Mileage at service:{" "}
-                      <span className="text-foreground font-medium">
-                        {formatMileage(record.mileage_at_service)}
-                      </span>
-                    </p>
-                  )}
-                  {(record.next_service_date ||
-                    record.next_service_mileage != null) && (
-                    <p>
-                      Next due:{" "}
-                      <span className="text-foreground font-medium">
-                        {[
-                          record.next_service_date &&
-                            formatDate(record.next_service_date),
-                          record.next_service_mileage != null &&
-                            formatMileage(record.next_service_mileage),
-                        ]
-                          .filter(Boolean)
-                          .join(" or ")}
-                      </span>
-                    </p>
-                  )}
-                  {record.cost != null && (
-                    <p>
-                      Cost:{" "}
-                      <span className="text-foreground font-medium">
-                        {formatCurrency(record.cost, currency)}
-                      </span>
-                    </p>
-                  )}
-                  {record.workshop && (
-                    <p>
-                      Workshop:{" "}
-                      <span className="text-foreground font-medium">
-                        {record.workshop}
-                      </span>
-                    </p>
-                  )}
-                  {record.notes && <p>Notes: {record.notes}</p>}
-                </CardContent>
-              </Card>
 
-              {editingRecord?.id === record.id && (
-                <div className="mt-2">
-                  <ServiceRecordForm
-                    {...formProps}
-                    existingRecord={editingRecord}
-                    onSuccess={() => setEditingRecord(null)}
-                  />
+                  <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                    {record.mileage_at_service != null && (
+                      <Fact icon={Gauge}>
+                        {formatMileage(record.mileage_at_service)}
+                      </Fact>
+                    )}
+                    {record.cost != null && (
+                      <Fact icon={Wallet}>
+                        {formatCurrency(record.cost, currency)}
+                      </Fact>
+                    )}
+                    {record.workshop && (
+                      <Fact icon={Building2}>{record.workshop}</Fact>
+                    )}
+                    {nextDue && (
+                      <Fact icon={CalendarClock}>
+                        <span className="text-muted-foreground">Next:</span>{" "}
+                        {nextDue}
+                      </Fact>
+                    )}
+                  </div>
+
+                  {record.notes && (
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {record.notes}
+                    </p>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
+              </li>
+            );
+          })}
+        </ol>
       )}
-    </div>
+
+      <Dialog
+        open={formState !== null}
+        onOpenChange={(open) => !open && setFormState(null)}
+      >
+        <SheetDialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {formState?.mode === "edit"
+                ? "Edit record"
+                : "Add service record"}
+            </DialogTitle>
+            <DialogDescription>
+              Next due date and mileage are suggested from the service type.
+            </DialogDescription>
+          </DialogHeader>
+          {formState && (
+            <ServiceRecordForm
+              // Remount per record so the form starts from that record's values
+              key={formState.mode === "edit" ? formState.record.id : "new"}
+              carId={carId}
+              currency={currency}
+              currentMileage={currentMileage}
+              existingRecord={
+                formState.mode === "edit" ? formState.record : undefined
+              }
+              onSuccess={() => setFormState(null)}
+            />
+          )}
+        </SheetDialogContent>
+      </Dialog>
+    </section>
   );
 }

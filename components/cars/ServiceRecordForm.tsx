@@ -23,7 +23,6 @@ import type { Currency, ServiceRecord } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -170,215 +169,204 @@ export default function ServiceRecordForm({
   }
 
   return (
-    <Card>
-      <CardContent className="pt-6">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Type *</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {SERVICE_CATEGORIES.map((category) => (
-                          <SelectGroup key={category.label}>
-                            <SelectLabel>{category.label}</SelectLabel>
-                            {category.types.map((serviceType) => (
-                              <SelectItem key={serviceType} value={serviceType}>
-                                {SERVICE_ICONS[serviceType]}
-                                {SERVICE_LABELS[serviceType]}
-                              </SelectItem>
-                            ))}
-                          </SelectGroup>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {titleRequired ? "What was done? *" : "Title"}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={
-                          titleRequired
-                            ? "e.g. Rust repair – rear arch"
-                            : "e.g. Castrol 5W-30"
-                        }
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="service_date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date *</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="date"
-                        className="cursor-pointer"
-                        onClick={(e) =>
-                          (e.target as HTMLInputElement).showPicker()
-                        }
-                        max={new Date().toISOString().split("T")[0]}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="mileage_at_service"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Mileage (km)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        inputMode="numeric"
-                        placeholder="150000"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="next_service_date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Next due date</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="date"
-                        className="cursor-pointer"
-                        onClick={(e) =>
-                          (e.target as HTMLInputElement).showPicker()
-                        }
-                        {...field}
-                      />
-                    </FormControl>
-                    {interval?.months && (
-                      <FormDescription>
-                        Suggested: every {interval.months} months
-                      </FormDescription>
-                    )}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="next_service_mileage"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Next due at (km)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        inputMode="numeric"
-                        placeholder="165000"
-                        {...field}
-                      />
-                    </FormControl>
-                    {interval?.km && (
-                      <FormDescription>
-                        Suggested: every {interval.km.toLocaleString()} km
-                      </FormDescription>
-                    )}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="cost"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cost ({currency})</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        inputMode="decimal"
-                        step="0.01"
-                        min="0"
-                        placeholder="0.00"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="workshop"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Workshop</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g. Auto Servis Lim" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Notes</FormLabel>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Type *</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
                   <FormControl>
-                    <Textarea
-                      placeholder="Any additional notes..."
-                      {...field}
-                    />
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={loading}>
-              {loading
-                ? isEditing
-                  ? "Saving..."
-                  : "Adding..."
-                : isEditing
-                  ? "Save Changes"
-                  : "Save Record"}
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+                  <SelectContent>
+                    {SERVICE_CATEGORIES.map((category) => (
+                      <SelectGroup key={category.label}>
+                        <SelectLabel>{category.label}</SelectLabel>
+                        {category.types.map((serviceType) => (
+                          <SelectItem key={serviceType} value={serviceType}>
+                            {SERVICE_ICONS[serviceType]}
+                            {SERVICE_LABELS[serviceType]}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  {titleRequired ? "What was done? *" : "Title"}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={
+                      titleRequired
+                        ? "e.g. Rust repair – rear arch"
+                        : "e.g. Castrol 5W-30"
+                    }
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="service_date"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Date *</FormLabel>
+                <FormControl>
+                  <Input
+                    type="date"
+                    className="cursor-pointer"
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                    max={new Date().toISOString().split("T")[0]}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="mileage_at_service"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Mileage (km)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    inputMode="numeric"
+                    placeholder="150000"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="next_service_date"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Next due date</FormLabel>
+                <FormControl>
+                  <Input
+                    type="date"
+                    className="cursor-pointer"
+                    onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+                    {...field}
+                  />
+                </FormControl>
+                {interval?.months && (
+                  <FormDescription>
+                    Suggested: every {interval.months} months
+                  </FormDescription>
+                )}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="next_service_mileage"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Next due at (km)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    inputMode="numeric"
+                    placeholder="165000"
+                    {...field}
+                  />
+                </FormControl>
+                {interval?.km && (
+                  <FormDescription>
+                    Suggested: every {interval.km.toLocaleString()} km
+                  </FormDescription>
+                )}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="cost"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Cost ({currency})</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    inputMode="decimal"
+                    step="0.01"
+                    min="0"
+                    placeholder="0.00"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="workshop"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Workshop</FormLabel>
+                <FormControl>
+                  <Input placeholder="e.g. Auto Servis Lim" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <FormField
+          control={form.control}
+          name="notes"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Notes</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Any additional notes..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" disabled={loading}>
+          {loading
+            ? isEditing
+              ? "Saving..."
+              : "Adding..."
+            : isEditing
+              ? "Save Changes"
+              : "Save Record"}
+        </Button>
+      </form>
+    </Form>
   );
 }

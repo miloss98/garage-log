@@ -1,95 +1,82 @@
-"use client";
-
 import type { CarWithRecords } from "@/types";
-import { getUpcomingServices } from "@/lib/service-status";
-import ServiceStatusBadge from "./ServiceStatusBadge";
 import Link from "next/link";
-import { Card, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight } from "lucide-react";
-import { formatMileage } from "@/lib/utils";
 import Image from "next/image";
-import { FUEL_LABELS } from "@/lib/constants";
+import { CarFront, ChevronRight, Gauge } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { formatMileage } from "@/lib/utils";
+import { FUEL_LABELS, SERVICE_LABELS } from "@/lib/constants";
+import { describeDue, getUpcomingServices } from "@/lib/service-status";
+import ServiceStatusBadge from "./ServiceStatusBadge";
 
+// The whole card is one link: a bigger tap target than a button inside it
 export default function CarCard({ car }: { car: CarWithRecords }) {
-  // Most urgent item comes first; only flag the card when action is needed
-  const mostUrgent = getUpcomingServices(car.mileage, car.service_records)[0];
-  const needsAttention = mostUrgent && mostUrgent.status !== "ok";
+  // Most urgent item comes first
+  const next = getUpcomingServices(car.mileage, car.service_records)[0];
+  const needsAttention = next && next.status !== "ok";
 
   return (
-    <Card className="card-hover overflow-hidden p-0 relative">
-      {needsAttention && (
-        <ServiceStatusBadge
-          status={mostUrgent.status}
-          className="absolute top-3 left-3 z-10 shadow"
-        />
-      )}
-      {car.image_url ? (
-        <div className="relative w-full h-44 overflow-hidden">
+    <Link
+      href={`/dashboard/cars/${car.id}`}
+      className="card-hover group block overflow-hidden rounded-2xl border border-border bg-card outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      <div className="relative aspect-16/10 bg-muted">
+        {car.image_url ? (
           <Image
             src={car.image_url}
             alt={`${car.name} - ${car.model ?? "car photo"}`}
             fill
             sizes="(max-width: 768px) 100vw, 400px"
-            className="object-cover"
-            loading="eager"
-            priority
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <CarFront size={48} className="text-muted-foreground/50" />
+          </div>
+        )}
+        {needsAttention && (
+          <ServiceStatusBadge
+            status={next.status}
+            className="absolute top-3 left-3 shadow"
+          />
+        )}
+      </div>
+
+      <div className="space-y-3 p-4">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="truncate text-lg font-semibold">{car.name}</h2>
+            <p className="truncate text-sm text-muted-foreground">
+              {[car.model, car.year].filter(Boolean).join(" · ")}
+            </p>
+          </div>
+          <Badge variant="secondary" className="shrink-0">
+            {FUEL_LABELS[car.fuel_type]}
+          </Badge>
+        </div>
+
+        <div className="flex items-center justify-between gap-3 border-t border-border pt-3 text-sm">
+          <span className="min-w-0 truncate text-muted-foreground">
+            {next ? (
+              <>
+                <span className="text-foreground">
+                  {next.title ?? SERVICE_LABELS[next.type]}
+                </span>{" "}
+                · {describeDue(next)}
+              </>
+            ) : car.mileage != null ? (
+              <span className="inline-flex items-center gap-1.5">
+                <Gauge size={14} /> {formatMileage(car.mileage)}
+              </span>
+            ) : (
+              "No reminders set"
+            )}
+          </span>
+          <ChevronRight
+            size={16}
+            className="shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5"
           />
         </div>
-      ) : (
-        <div className="w-full h-44 bg-muted flex items-center justify-center">
-          <span className="text-6xl">🚗</span>
-        </div>
-      )}
-      <div className="p-4 pb-0">
-        <div className="flex items-center justify-between mb-2">
-          <CardTitle className="text-lg">{car.name}</CardTitle>
-          {car.fuel_type && (
-            <Badge variant="secondary">{FUEL_LABELS[car.fuel_type]}</Badge>
-          )}
-        </div>
-        <div className="space-y-1 text-sm text-muted-foreground pb-4">
-          {car.model && (
-            <p>
-              Model:{" "}
-              <span className="text-foreground font-medium">{car.model}</span>
-            </p>
-          )}
-          {car.year && (
-            <p>
-              Year:{" "}
-              <span className="text-foreground font-medium">{car.year}</span>
-            </p>
-          )}
-          {car.licence_plate && (
-            <p>
-              Plate:{" "}
-              <span className="text-foreground font-medium">
-                {car.licence_plate}
-              </span>
-            </p>
-          )}
-          {car.mileage && (
-            <p>
-              Mileage:{" "}
-              <span className="text-foreground font-medium">
-                {formatMileage(car.mileage)}
-              </span>
-            </p>
-          )}
-        </div>
       </div>
-      <div className="p-4 pt-0">
-        <Button asChild className="w-full transition-all duration-200">
-          <Link
-            href={`/dashboard/cars/${car.id}`}
-            className="flex items-center justify-center gap-2"
-          >
-            View Details <ArrowRight size={13} />
-          </Link>
-        </Button>
-      </div>
-    </Card>
+    </Link>
   );
 }

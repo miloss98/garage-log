@@ -7,13 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Car } from "lucide-react";
 
+// Same shape as CarCard, so nothing jumps when the data arrives
 function CarCardSkeleton() {
   return (
-    <div className="rounded-lg border bg-card p-4 space-y-3">
-      <Skeleton className="h-40 w-full rounded-md" />
-      <Skeleton className="h-5 w-2/3" />
-      <Skeleton className="h-4 w-1/2" />
-      <Skeleton className="h-9 w-full" />
+    <div className="overflow-hidden rounded-2xl border border-border bg-card">
+      <Skeleton className="aspect-16/10 w-full rounded-none" />
+      <div className="space-y-3 p-4">
+        <Skeleton className="h-5 w-2/3" />
+        <Skeleton className="h-4 w-1/2" />
+        <Skeleton className="h-4 w-full" />
+      </div>
     </div>
   );
 }
@@ -23,7 +26,7 @@ export default function CarList() {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
         {[1, 2, 3].map((i) => (
           <CarCardSkeleton key={i} />
         ))}
@@ -57,7 +60,7 @@ export default function CarList() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
       {cars.map((car) => (
         <CarCard key={car.id} car={car} />
       ))}
