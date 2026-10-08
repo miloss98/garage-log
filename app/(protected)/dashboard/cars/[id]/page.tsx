@@ -1,4 +1,4 @@
-import { serverFetch } from "@/lib/api/server";
+import { getCurrentUser, serverFetch } from "@/lib/api/server";
 import type { Car, ServiceRecord } from "@/types";
 import { FUEL_LABELS } from "@/lib/constants";
 import { notFound } from "next/navigation";
@@ -18,7 +18,8 @@ export default async function CarDetailPage({
 }) {
   const { id } = await params;
   // Both requests run in parallel instead of one after the other.
-  const [{ car }, { serviceRecords }] = await Promise.all([
+  const [user, { car }, { serviceRecords }] = await Promise.all([
+    getCurrentUser(),
     serverFetch<{ car: Car | null }>(`/cars/${id}`),
     serverFetch<{ serviceRecords: ServiceRecord[] }>(
       `/cars/${id}/service-records`,
@@ -112,7 +113,12 @@ export default async function CarDetailPage({
         </div>
       </div>
 
-      <ServiceRecordList carId={car.id} serviceRecords={serviceRecords} />
+      <ServiceRecordList
+        carId={car.id}
+        serviceRecords={serviceRecords}
+        currency={user?.currency ?? "EUR"}
+        currentMileage={car.mileage}
+      />
     </div>
   );
 }

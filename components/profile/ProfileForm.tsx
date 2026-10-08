@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,6 +25,14 @@ import {
   profileSchema,
 } from "@/lib/validations/profile.schema";
 import { getInitials } from "@/lib/utils";
+import { CURRENCIES } from "@/lib/constants";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function ProfileForm({ user }: { user: User }) {
   const router = useRouter();
@@ -34,6 +43,7 @@ export default function ProfileForm({ user }: { user: User }) {
     resolver: zodResolver(profileSchema),
     defaultValues: {
       full_name: user.full_name ?? "",
+      currency: user.currency,
     },
   });
 
@@ -52,7 +62,8 @@ export default function ProfileForm({ user }: { user: User }) {
 
     toast.success("Profile updated!");
     setLoading(false);
-    // Re-runs the server components, so the navbar and avatar get the new name.
+    // Re-runs the server components, so the navbar, avatar and
+    // cost formatting pick up the new name and currency.
     router.refresh();
   }
 
@@ -91,6 +102,34 @@ export default function ProfileForm({ user }: { user: User }) {
                     <FormControl>
                       <Input placeholder="John Doe" {...field} />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="currency"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Currency</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {CURRENCIES.map((code) => (
+                          <SelectItem key={code} value={code}>
+                            {code}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>Used for service costs</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

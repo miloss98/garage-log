@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/api/client";
-import type { ServiceRecord } from "@/types";
+import type { Currency, ServiceRecord } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +21,7 @@ import ServiceRecordForm from "./ServiceRecordForm";
 import { toast } from "sonner";
 import { Pencil, Trash2, X, Wrench, Plus } from "lucide-react";
 import { SERVICE_LABELS, SERVICE_ICONS } from "@/lib/constants";
-import { formatDate } from "@/lib/utils";
+import { formatCurrency, formatDate, formatMileage } from "@/lib/utils";
 
 function getStatusBadge(nextServiceDate: string | null) {
   if (!nextServiceDate) return null;
@@ -123,10 +123,15 @@ function DeleteRecordButton({
 export default function ServiceRecordList({
   carId,
   serviceRecords,
+  currency,
+  currentMileage,
 }: {
   carId: string;
   serviceRecords: ServiceRecord[];
+  currency: Currency;
+  currentMileage: number | null;
 }) {
+  const formProps = { carId, currency, currentMileage };
   const [showForm, setShowForm] = useState(false);
   const [editingRecord, setEditingRecord] = useState<ServiceRecord | null>(
     null,
@@ -156,7 +161,7 @@ export default function ServiceRecordList({
       {showForm && (
         <div className="mb-6">
           <ServiceRecordForm
-            carId={carId}
+            {...formProps}
             onSuccess={() => setShowForm(false)}
           />
         </div>
@@ -176,7 +181,15 @@ export default function ServiceRecordList({
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-base flex items-center gap-2">
                       {SERVICE_ICONS[record.type]}
-                      {SERVICE_LABELS[record.type] ?? record.type}
+                      <span>
+                        {SERVICE_LABELS[record.type] ?? record.type}
+                        {record.title && (
+                          <span className="font-normal text-muted-foreground">
+                            {" "}
+                            · {record.title}
+                          </span>
+                        )}
+                      </span>
                     </CardTitle>
                     <div className="flex items-center gap-2">
                       {getStatusBadge(record.next_service_date)}
@@ -212,19 +225,43 @@ export default function ServiceRecordList({
                       {formatDate(record.service_date)}
                     </span>
                   </p>
-                  {record.next_service_date && (
-                    <p>
-                      Next service:{" "}
-                      <span className="text-foreground font-medium">
-                        {formatDate(record.next_service_date)}
-                      </span>
-                    </p>
-                  )}
-                  {record.mileage_at_service && (
+                  {record.mileage_at_service != null && (
                     <p>
                       Mileage at service:{" "}
                       <span className="text-foreground font-medium">
-                        {record.mileage_at_service.toLocaleString()} km
+                        {formatMileage(record.mileage_at_service)}
+                      </span>
+                    </p>
+                  )}
+                  {(record.next_service_date ||
+                    record.next_service_mileage != null) && (
+                    <p>
+                      Next due:{" "}
+                      <span className="text-foreground font-medium">
+                        {[
+                          record.next_service_date &&
+                            formatDate(record.next_service_date),
+                          record.next_service_mileage != null &&
+                            formatMileage(record.next_service_mileage),
+                        ]
+                          .filter(Boolean)
+                          .join(" or ")}
+                      </span>
+                    </p>
+                  )}
+                  {record.cost != null && (
+                    <p>
+                      Cost:{" "}
+                      <span className="text-foreground font-medium">
+                        {formatCurrency(record.cost, currency)}
+                      </span>
+                    </p>
+                  )}
+                  {record.workshop && (
+                    <p>
+                      Workshop:{" "}
+                      <span className="text-foreground font-medium">
+                        {record.workshop}
                       </span>
                     </p>
                   )}
@@ -235,7 +272,7 @@ export default function ServiceRecordList({
               {editingRecord?.id === record.id && (
                 <div className="mt-2">
                   <ServiceRecordForm
-                    carId={carId}
+                    {...formProps}
                     existingRecord={editingRecord}
                     onSuccess={() => setEditingRecord(null)}
                   />

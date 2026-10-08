@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type { Currency } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -33,6 +34,20 @@ export function formatDate(date: string): string {
     year: "numeric",
     timeZone: "UTC",
   });
+}
+
+// "2025-03-14" + 12 months -> "2026-03-14" (in UTC, like the stored dates)
+export function addMonthsToDateInput(date: string, months: number): string {
+  const d = new Date(`${date}T00:00:00Z`);
+  d.setUTCMonth(d.getUTCMonth() + months);
+  return d.toISOString().slice(0, 10);
+}
+
+// Intl knows each currency's symbol and decimals: 1234.5 EUR -> "€1,234.50"
+export function formatCurrency(amount: number | string, currency: Currency) {
+  return new Intl.NumberFormat("en-GB", { style: "currency", currency }).format(
+    Number(amount),
+  );
 }
 
 // "2025-03-14T00:00:00.000Z" -> "2025-03-14", the format <input type="date"> expects.
