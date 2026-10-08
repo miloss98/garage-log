@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Logo from "@/components/ui/Logo";
+import TryDemoButton from "@/components/auth/TryDemoButton";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
@@ -137,6 +138,13 @@ export default function LoginPage() {
               </form>
             </Form>
           </div>
+
+          <div className="flex items-center gap-3 my-6 text-xs text-[#707070]">
+            <span className="h-px flex-1 bg-[#333333]" />
+            or just look around
+            <span className="h-px flex-1 bg-[#333333]" />
+          </div>
+          <TryDemoButton className="w-full h-10 border-[#3d3d3d] bg-transparent text-[#c0c0c0] hover:bg-[#333333] hover:text-[#f0f0f0]" />
 
           <p className="text-center text-sm text-[#707070] mt-6">
             Don&apos;t have an account?{" "}

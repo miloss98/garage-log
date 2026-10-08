@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/api/server";
+import TryDemoButton from "@/components/auth/TryDemoButton";
 import Navbar from "@/components/layout/Navbar";
 import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
@@ -55,14 +56,7 @@ export default async function LandingPage() {
                       Start for free <ArrowRight size={16} />
                     </Link>
                   </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    asChild
-                    className="h-12 px-8 text-base border-[#3d3d3d] bg-transparent text-[#c0c0c0] hover:bg-[#333333] hover:text-[#f0f0f0]"
-                  >
-                    <Link href="/login">Sign in</Link>
-                  </Button>
+                  <TryDemoButton className="h-12 px-8 text-base border-[#3d3d3d] bg-transparent text-[#c0c0c0] hover:bg-[#333333] hover:text-[#f0f0f0]" />
                 </>
               )}
             </div>

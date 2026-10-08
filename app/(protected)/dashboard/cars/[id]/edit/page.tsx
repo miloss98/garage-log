@@ -1,4 +1,4 @@
-import { serverFetch } from "@/lib/api/server";
+import { getCurrentUser, serverFetch } from "@/lib/api/server";
 import type { Car } from "@/types";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,10 @@ export default async function EditCarPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const { car } = await serverFetch<{ car: Car | null }>(`/cars/${id}`);
+  const [user, { car }] = await Promise.all([
+    getCurrentUser(),
+    serverFetch<{ car: Car | null }>(`/cars/${id}`),
+  ]);
 
   if (!car) notFound();
 
@@ -30,7 +33,7 @@ export default async function EditCarPage({
           Update your vehicle details
         </p>
       </div>
-      <CarEditForm car={car} />
+      <CarEditForm car={car} isDemo={user?.is_demo} />
     </div>
   );
 }

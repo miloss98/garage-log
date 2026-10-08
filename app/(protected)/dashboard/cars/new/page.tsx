@@ -1,6 +1,9 @@
 import CarForm from "@/components/cars/CarForm";
+import { getCurrentUser } from "@/lib/api/server";
 
-export default function NewCarPage() {
+export default async function NewCarPage() {
+  const user = await getCurrentUser();
+
   return (
     <div className="max-w-2xl mx-auto">
       <div className="mb-8">
@@ -9,7 +12,7 @@ export default function NewCarPage() {
           Fill in your vehicle details
         </p>
       </div>
-      <CarForm />
+      <CarForm isDemo={user?.is_demo} />
     </div>
   );
 }

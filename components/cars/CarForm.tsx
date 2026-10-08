@@ -33,7 +33,7 @@ import { toast } from "sonner";
 import ImageUpload from "../ui/ImageUpload";
 import { FUEL_LABELS } from "@/lib/constants";
 
-export default function CarForm() {
+export default function CarForm({ isDemo = false }: { isDemo?: boolean }) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
@@ -80,17 +80,23 @@ export default function CarForm() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Image upload */}
-            <ImageUpload
-              preview={imagePreview}
-              onChange={(file) => {
-                setImageFile(file);
-                setImagePreview(URL.createObjectURL(file));
-              }}
-              onClear={() => {
-                setImageFile(null);
-                setImagePreview(null);
-              }}
-            />
+            {isDemo ? (
+              <p className="rounded-xl border border-dashed p-4 text-sm text-muted-foreground">
+                Photo uploads are turned off in the demo.
+              </p>
+            ) : (
+              <ImageUpload
+                preview={imagePreview}
+                onChange={(file) => {
+                  setImageFile(file);
+                  setImagePreview(URL.createObjectURL(file));
+                }}
+                onClear={() => {
+                  setImageFile(null);
+                  setImagePreview(null);
+                }}
+              />
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField

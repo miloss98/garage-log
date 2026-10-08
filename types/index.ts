@@ -9,6 +9,8 @@ export type User = {
   full_name: string | null;
   avatar_url: string | null;
   currency: Currency;
+  // Temporary "Try the demo" account (deleted after 24 hours)
+  is_demo: boolean;
   created_at: string;
   updated_at: string;
 };
