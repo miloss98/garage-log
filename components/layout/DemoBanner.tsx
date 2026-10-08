@@ -1,34 +1,24 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
 import { FlaskConical } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { apiFetch } from "@/lib/api/client";
+import { useLogout } from "@/hooks/useLogout";
 
 export default function DemoBanner() {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-
-  // Leave the demo first: logged-in users are redirected away from /register
-  async function createRealAccount() {
-    await apiFetch("/auth/logout", { method: "POST" }).catch(() => {});
-    queryClient.clear();
-    router.push("/register");
-    router.refresh();
-  }
+  const logout = useLogout();
 
   return (
     <div className="border-b border-primary/20 bg-primary/10">
-      <div className="container mx-auto flex flex-col gap-2 px-5 py-2.5 text-sm sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-2 px-5 py-2.5 text-sm sm:flex-row sm:items-center sm:justify-between lg:px-8">
         <p className="flex items-center gap-2 text-foreground">
           <FlaskConical size={16} className="shrink-0" />
           You&apos;re exploring a demo garage. Changes are private and
           disappear after 24 hours.
         </p>
+        {/* Leave the demo first: logged-in users are redirected away from /register */}
         <Button
           size="sm"
-          onClick={createRealAccount}
+          onClick={() => logout("/register")}
           className="self-start sm:self-auto"
         >
           Create your own account

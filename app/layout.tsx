@@ -1,5 +1,5 @@
 import { Sora, DM_Sans } from "next/font/google";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import QueryProvider from "@/components/providers/QueryProvider";
@@ -19,6 +19,16 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = LayoutMetadata;
+
+// viewportFit "cover" lets the mobile tab bar pad itself for the iPhone home
+// indicator (env(safe-area-inset-bottom)); themeColor tints the browser UI
+export const viewport: Viewport = {
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f7f8fa" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0d12" },
+  ],
+};
 
 export default function RootLayout({
   children,

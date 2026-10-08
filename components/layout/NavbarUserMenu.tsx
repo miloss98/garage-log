@@ -1,9 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useQueryClient } from "@tanstack/react-query";
-import { apiFetch } from "@/lib/api/client";
+import { useLogout } from "@/hooks/useLogout";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,18 +20,8 @@ export default function NavbarUserMenu({
   email: string;
   fullName?: string | null;
 }) {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-
+  const logout = useLogout();
   const initials = getInitials(fullName, email);
-  async function handleLogout() {
-    // Even if the request fails (e.g. token already expired), still leave.
-    await apiFetch("/auth/logout", { method: "POST" }).catch(() => {});
-    // Drop cached cars so the next user on this browser can't see them.
-    queryClient.clear();
-    router.push("/login");
-    router.refresh();
-  }
 
   return (
     <DropdownMenu>
@@ -63,7 +51,7 @@ export default function NavbarUserMenu({
         <DropdownMenuSeparator className="bg-border" />
         <DropdownMenuItem
           className="text-destructive cursor-pointer focus:bg-accent focus:text-destructive"
-          onClick={handleLogout}
+          onClick={() => logout()}
         >
           Log out
         </DropdownMenuItem>
