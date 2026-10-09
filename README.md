@@ -15,13 +15,14 @@ GarageLog is a full-stack car maintenance tracker built with Next.js 16 and a cu
 
 ## Features
 
-- **Multi-vehicle support** — Add and manage multiple cars, each with its own full service history
-- **Service records** — Log oil changes, small and big services, tire changes and registration renewals with dates and mileage
-- **Smart alerts** — Automatic overdue and due-soon indicators based on next service date
-- **Dashboard overview** — At-a-glance stats showing total vehicles, overdue services and upcoming deadlines
-- **Car photos** — Upload and manage car images via UploadThing
-- **Authentication** — Secure email/password auth with protected routes and per-user data isolation
-- **Responsive design** — Fully functional on desktop and mobile
+- **Reminders by date or mileage** — Oil every 12 months or 15,000 km, whichever comes first; overdue and due-soon items surface automatically
+- **Service history timeline** — Services, repairs and documents (registration, inspection, insurance) with mileage, cost and workshop
+- **Expenses dashboard** — Spending per month, per car and per service type, in your own currency
+- **Multiple vehicles** — Each car with its own photo, history and upcoming items
+- **One-click demo** — A private, pre-filled demo garage per visitor, deleted after 24 hours
+- **Mobile-first UI** — Sidebar on desktop, app-style tab bar and bottom sheets on phones, light and dark mode
+- **Secure auth** — JWT in an httpOnly cookie, rate-limited login, per-user data isolation
+- **API docs** — Interactive Swagger UI at [/api/docs](https://garage-log.vercel.app/api/docs)
 
 ---
 

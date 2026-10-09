@@ -278,6 +278,10 @@ export default async function LandingPage() {
             Built with Next.js, Express, Prisma &amp; PostgreSQL
           </p>
           <div className="flex items-center gap-4">
+            {/* Swagger UI, served by the API through the /api proxy */}
+            <a href="/api/docs" className="hover:text-foreground">
+              API docs
+            </a>
             <a
               href="https://github.com/miloss98/garage-log"
               target="_blank"
