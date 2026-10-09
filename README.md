@@ -1,6 +1,11 @@
-# GarageLog
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="public/logo-on-dark.png">
+    <img src="public/logo-on-light.png" alt="GarageLog" height="64">
+  </picture>
+</p>
 
-**Never miss a car service again.**
+<p align="center"><strong>Never miss a car service again.</strong></p>
 
 GarageLog is a full-stack car maintenance tracker built with Next.js 16 and a custom Express API ([garage-log-api](https://github.com/miloss98/garage-log-api)). Track oil changes, services, tire changes and registration deadlines for all your vehicles — in one place.
 

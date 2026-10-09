@@ -6,7 +6,10 @@ export const LayoutMetadata: Metadata = {
     template: "%s | GarageLog",
   },
   description:
-    "Track your car maintenance, oil changes, services, tire changes and registration deadlines — all in one place.",
+    "Track car maintenance for all your vehicles: service history, reminders by date or mileage, and expenses — all in one place.",
+  applicationName: "GarageLog",
+  // Name and status bar style when added to an iPhone home screen
+  appleWebApp: { title: "GarageLog", statusBarStyle: "black-translucent" },
   keywords: [
     "car maintenance",
     "vehicle tracker",
