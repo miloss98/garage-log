@@ -24,9 +24,9 @@ export const LayoutMetadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://garage-log.vercel.app/",
-    title: "GarageLog",
+    title: "GarageLog — Never miss a car service again",
     description:
-      "Never miss a car service again. Track oil changes, services, tire changes and registration deadlines.",
+      "Service history, reminders by date or mileage, and expenses for all your cars. Try the one-click demo.",
     siteName: "GarageLog",
     images: [
       {
@@ -39,8 +39,9 @@ export const LayoutMetadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "GarageLog",
-    description: "Never miss a car service again.",
+    title: "GarageLog — Never miss a car service again",
+    description:
+      "Service history, reminders by date or mileage, and expenses for all your cars.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -52,7 +53,7 @@ export const LayoutMetadata: Metadata = {
 export const AppMetadata: Metadata = {
   title: "GarageLog — Never miss a car service again",
   description:
-    "Track oil changes, services, tire changes and registration deadlines for all your vehicles in one place.",
+    "Service history, reminders by date or mileage, and expenses for all your cars. Try the one-click demo — no sign-up needed.",
 };
 
 export const LoginMetadata: Metadata = {
